@@ -19,8 +19,9 @@
 
 #include "Configuration.h"
 
-#define DEFAULT_HYSTERESIS_MM 0,0.125,0,0
-#define Y_DEFAULT_HYSTERESIS_MM 0.125
+//Edit these constants if needed to set a default hysteresis. It is normally done trought LCD menu
+#define DEFAULT_HYSTERESIS_MM 0,0,0,0
+#define Y_DEFAULT_HYSTERESIS_MM 0
 
 
 //===========================================================================
@@ -35,6 +36,7 @@ public:
   void ReportToSerial();
   void InsertCorrectionV2(const float &x, const float &y, const float &z, const float &e);
 
+
 private:
   float         m_hysteresis_mm[NUM_AXIS];
   unsigned char m_prev_direction_bits;
@@ -42,6 +44,9 @@ private:
 };
 
 //===========================================================================
+
+ void update_hysteresis_circles();
+ void update_hysteresis_off();
 
 extern Hysteresis hysteresis;
 extern float max_xy_jerk;

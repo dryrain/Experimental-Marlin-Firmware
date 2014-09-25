@@ -94,6 +94,10 @@ void Hysteresis::ReportToSerial()
   SERIAL_PROTOCOLLN("");
 }
 
+
+
+
+
 //===========================================================================
 unsigned char calc_direction_bits( const float* current_position, const float* destination )
 {
@@ -203,4 +207,20 @@ void Hysteresis::InsertCorrectionV2(const float &x, const float &y, const float 
 	set_position( position_before_correction );
   }
   m_prev_direction_bits = direction_bits;
+}
+
+
+
+//Extra functions for LCD menu
+void update_hysteresis_circles()
+{
+	menu_hysteresis_correction=0.1;
+	max_xy_jerk=1;
+}
+
+
+void update_hysteresis_off()
+{
+	menu_hysteresis_correction=0;
+	max_xy_jerk=5;
 }

@@ -71,6 +71,7 @@ static void lcd_control_temperature_preheat_abs_settings_menu();
 static void lcd_control_motion_menu();
 static void lcd_control_retract_menu();
 static void lcd_sdcard_menu();
+static void lcd_hysteresis_menu();
 //static void lcd_change_menu();
 //static void lcd_load();
 //static void lcd_unload();
@@ -716,7 +717,7 @@ static void lcd_control_motion_menu()
     START_MENU();
     MENU_ITEM(back, MSG_CONTROL, lcd_control_menu);
     MENU_ITEM_EDIT(float5, MSG_ACC, &acceleration, 500, 99000);
-	MENU_ITEM_EDIT(float52, MSG_HYSTERESIS,&menu_hysteresis_correction,0.05,5);
+	MENU_ITEM(submenu, MSG_HYSTERESIS,lcd_hysteresis_menu);
     MENU_ITEM_EDIT(float3, MSG_VXY_JERK, &max_xy_jerk, 1, 990);
     MENU_ITEM_EDIT(float52, MSG_VZ_JERK, &max_z_jerk, 0.1, 990);
     MENU_ITEM_EDIT(float3, MSG_VE_JERK, &max_e_jerk, 1, 990);
@@ -740,6 +741,20 @@ static void lcd_control_motion_menu()
 #endif
     END_MENU();
 }
+
+//Rapduch------------- Hysteresis
+static void lcd_hysteresis_menu()
+{
+	START_MENU();
+	MENU_ITEM(back, MSG_MOTION, lcd_control_motion_menu);
+	MENU_ITEM(function, MSG_HYST_CIRCLES, update_hysteresis_circles);
+	MENU_ITEM_EDIT(float52, MSG_HYST_MANUAL,&menu_hysteresis_correction,0.00,5);
+	MENU_ITEM(function,MSG_HYST_OFF,update_hysteresis_off);
+	END_MENU();
+}
+
+//-------------------------------
+
 
 #ifdef FWRETRACT
 static void lcd_control_retract_menu()
@@ -1409,5 +1424,10 @@ void copy_and_scalePID_d()
   updatePID();
 #endif
 }
+
+
+
+
+//---------------------------------
 
 #endif //ULTRA_LCD

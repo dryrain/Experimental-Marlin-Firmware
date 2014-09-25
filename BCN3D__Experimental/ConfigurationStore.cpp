@@ -39,7 +39,7 @@ void _EEPROM_readData(int &pos, uint8_t* value, uint8_t size)
 // the default values are used whenever there is a change to the data, to prevent
 // wrong data being written to the variables.
 // ALSO:  always make sure the variables in the Store and retrieve sections are in the same order.
-#define EEPROM_VERSION "V08"
+#define EEPROM_VERSION "V10"
 
 #ifdef EEPROM_SETTINGS
 void Config_StoreSettings() 
@@ -274,6 +274,7 @@ void Config_ResetDefault()
     max_z_jerk=DEFAULT_ZJERK;
     max_e_jerk=DEFAULT_EJERK;
     add_homeing[0] = add_homeing[1] = add_homeing[2] = 0;
+	menu_hysteresis_correction=Y_DEFAULT_HYSTERESIS_MM;
 #ifdef ULTIPANEL
     plaPreheatHotendTemp = PLA_PREHEAT_HOTEND_TEMP;
     plaPreheatHPBTemp = PLA_PREHEAT_HPB_TEMP;
