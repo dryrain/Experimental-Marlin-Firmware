@@ -244,8 +244,8 @@ static void lcd_sdcard_pause()
 	copy_position( position_before_correction );
 	//Set to move 10 mm the Z axis to avoid burning the figure printed 
 	float Z_correction_pause = current_position[Z_AXIS]+20;
-	plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], Z_correction_pause, current_position[E_AXIS], max_feedrate[Z_AXIS], active_extruder);
-    //set_position( position_before_correction );
+	//plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], Z_correction_pause, current_position[E_AXIS], max_feedrate[Z_AXIS], active_extruder);
+    set_position( position_before_correction );
 	card.pauseSDPrint();
 }
 static void lcd_sdcard_resume()
@@ -255,7 +255,7 @@ static void lcd_sdcard_resume()
 	//copy_position( position_before_correction );
 	//Set to move 10 mm the Z axis to avoid burning the figure printed
 	float Z_correction_resume = current_position[Z_AXIS]-20;
-	plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], Z_correction_resume, current_position[E_AXIS], max_feedrate[Z_AXIS], active_extruder);
+	//plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], Z_correction_resume, current_position[E_AXIS], max_feedrate[Z_AXIS], active_extruder);
 	//set_position( position_before_correction );
 
     card.startFileprint();
@@ -551,6 +551,7 @@ static void lcd_move_z()
         plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], 60, active_extruder);
         lcdDrawUpdate = 1;
 		SERIAL_PROTOCOLPGM("Proves Jordi eix Z");
+		MSerial.println("Proves");
     }
     if (lcdDrawUpdate)
     {
@@ -745,6 +746,7 @@ static void lcd_control_motion_menu()
 //Rapduch------------- Hysteresis
 static void lcd_hysteresis_menu()
 {
+	
 	START_MENU();
 	MENU_ITEM(back, MSG_MOTION, lcd_control_motion_menu);
 	MENU_ITEM(function, MSG_HYST_CIRCLES, update_hysteresis_circles);

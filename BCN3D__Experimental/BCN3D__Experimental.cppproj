@@ -54,10 +54,10 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -94,10 +94,10 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -133,6 +133,72 @@
         </avrgcc.compiler.symbols.DefSymbols>
       </AvrGccCpp>
     </ToolchainSettings>
+    <VisualMicroSettings>
+      <VisualMicroSettings>
+        <arduino.upload.port>COM3</arduino.upload.port>
+        <VM.DebugTextMessages.SerialWindow>0</VM.DebugTextMessages.SerialWindow>
+        <arduino.board.name>mega2560</arduino.board.name>
+        <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
+        <arduino.board.property_bag>name=Arduino Mega 2560 or Mega ADK
+upload.protocol=wiring
+upload.maximum_size=258048
+upload.speed=115200
+bootloader.low_fuses=0xFF
+bootloader.high_fuses=0xD8
+bootloader.extended_fuses=0xFD
+bootloader.path=stk500v2
+bootloader.file=stk500boot_v2_mega2560.hex
+bootloader.unlock_bits=0x3F
+bootloader.lock_bits=0x0F
+build.mcu=atmega2560
+build.f_cpu=16000000L
+build.core=arduino
+build.variant=mega
+runtime.ide.path=C:\Program Files\Arduino
+build.system.path=C:\Program Files\Arduino\hardware\arduino\system
+runtime.ide.version=105
+originalid=mega2560
+vm.platform.root.path=C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\arduino10x
+vm.core.include=arduino.h
+ide.hint=Arduino 0023 and 1.0.x Ide
+ide.location.key=Arduino
+ide.location.ide.winreg=Arduino 1.0.x Application
+ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook
+ide.location.sketchbook.preferences=sketchbook.path
+ide.location.sketchbook.default=%MYDOCUMENTS%\arduino
+ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt
+ide.default.package=arduino
+ide.default.platform=avr
+ide.multiplatform=true
+ide.includes=arduino.h
+ide.platformswithoutpackage=true
+ide.includes.fallback=wprogram.h
+ide.extension=ino
+ide.extension.fallback=pde
+ide.versionLTEQ=149
+ide.exe=arduino.exe
+ide.hosts=atmel
+ide.url=http://arduino.cc/en/Main/Software
+vm.debug=true
+software=ARDUINO
+ide.appid=arduino10x
+location.sketchbook=C:\Users\reprap\Documents
+build.board=AVR_MEGA2560
+vm.boardsource.path=C:\Program Files\Arduino\hardware\arduino
+vm.platformname.name=avr
+build.arch=AVR
+</arduino.board.property_bag>
+        <arduino.build.mcu>atmega2560</arduino.build.mcu>
+        <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
+        <arduino.build.core>arduino</arduino.build.core>
+        <arduino.upload.protocol>wiring</arduino.upload.protocol>
+        <arduino.upload.speed>115200</arduino.upload.speed>
+        <arduino.upload.maximum_size>258048</arduino.upload.maximum_size>
+        <visualmicro.application.name>arduino10x</visualmicro.application.name>
+        <visualmicro.package.name>arduino</visualmicro.package.name>
+        <visualmicro.platform.name>avr</visualmicro.platform.name>
+      </VisualMicroSettings>
+    </VisualMicroSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
@@ -149,10 +215,10 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -189,10 +255,10 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
             <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -228,6 +294,72 @@
         </avrgcc.compiler.symbols.DefSymbols>
       </AvrGccCpp>
     </ToolchainSettings>
+    <VisualMicroSettings>
+      <VisualMicroSettings>
+        <arduino.upload.port>COM3</arduino.upload.port>
+        <VM.DebugTextMessages.SerialWindow>0</VM.DebugTextMessages.SerialWindow>
+        <arduino.board.name>mega2560</arduino.board.name>
+        <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
+        <arduino.board.property_bag>name=Arduino Mega 2560 or Mega ADK
+upload.protocol=wiring
+upload.maximum_size=258048
+upload.speed=115200
+bootloader.low_fuses=0xFF
+bootloader.high_fuses=0xD8
+bootloader.extended_fuses=0xFD
+bootloader.path=stk500v2
+bootloader.file=stk500boot_v2_mega2560.hex
+bootloader.unlock_bits=0x3F
+bootloader.lock_bits=0x0F
+build.mcu=atmega2560
+build.f_cpu=16000000L
+build.core=arduino
+build.variant=mega
+runtime.ide.path=C:\Program Files\Arduino
+build.system.path=C:\Program Files\Arduino\hardware\arduino\system
+runtime.ide.version=105
+originalid=mega2560
+vm.platform.root.path=C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\arduino10x
+vm.core.include=arduino.h
+ide.hint=Arduino 0023 and 1.0.x Ide
+ide.location.key=Arduino
+ide.location.ide.winreg=Arduino 1.0.x Application
+ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook
+ide.location.sketchbook.preferences=sketchbook.path
+ide.location.sketchbook.default=%MYDOCUMENTS%\arduino
+ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt
+ide.default.package=arduino
+ide.default.platform=avr
+ide.multiplatform=true
+ide.includes=arduino.h
+ide.platformswithoutpackage=true
+ide.includes.fallback=wprogram.h
+ide.extension=ino
+ide.extension.fallback=pde
+ide.versionLTEQ=149
+ide.exe=arduino.exe
+ide.hosts=atmel
+ide.url=http://arduino.cc/en/Main/Software
+vm.debug=true
+software=ARDUINO
+ide.appid=arduino10x
+location.sketchbook=C:\Users\reprap\Documents
+build.board=AVR_MEGA2560
+vm.boardsource.path=C:\Program Files\Arduino\hardware\arduino
+vm.platformname.name=avr
+build.arch=AVR
+</arduino.board.property_bag>
+        <arduino.build.mcu>atmega2560</arduino.build.mcu>
+        <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
+        <arduino.build.core>arduino</arduino.build.core>
+        <arduino.upload.protocol>wiring</arduino.upload.protocol>
+        <arduino.upload.speed>115200</arduino.upload.speed>
+        <arduino.upload.maximum_size>258048</arduino.upload.maximum_size>
+        <visualmicro.application.name>arduino10x</visualmicro.application.name>
+        <visualmicro.package.name>arduino</visualmicro.package.name>
+        <visualmicro.platform.name>avr</visualmicro.platform.name>
+      </VisualMicroSettings>
+    </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
     <None Include="BCN3D__Experimental.ino">
@@ -389,9 +521,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.BCN3D__Experimental.vsarduino.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Visual Micro\.BCN3D__vCE_Hist_eeprom_v2.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="watchdog.cpp">

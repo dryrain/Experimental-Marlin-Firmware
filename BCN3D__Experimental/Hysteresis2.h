@@ -35,6 +35,10 @@ public:
   void SetAxis( int axis, float mm );
   void ReportToSerial();
   void InsertCorrectionV2(const float &x, const float &y, const float &z, const float &e);
+  unsigned char calc_move_bits( const long* current_position, const long* destination );
+  
+  
+  unsigned int done;
 
 
 private:
@@ -51,4 +55,5 @@ private:
 extern Hysteresis hysteresis;
 extern float max_xy_jerk;
 extern float menu_hysteresis_correction;
+extern MarlinSerial MSerial;
 

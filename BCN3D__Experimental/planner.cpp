@@ -538,12 +538,14 @@ void plan_buffer_line(const float &x, const float &y, const float &z, const floa
 {
 	//Rapduch
 	//Hysteresis correction if needed
-	if (menu_hysteresis_correction>0)
-	{		
+	SERIAL_PROTOCOLLN("Plan Buffer Line");
+	if (menu_hysteresis_correction>0 && hysteresis.done==0)
+	{	
+		SERIAL_PROTOCOLLN("Insert Correction");			
 		hysteresis.InsertCorrectionV2(x,y,z,e);
 	}
+	SERIAL_PROTOCOLLN("");
 	
-
   // Calculate the buffer head after we push this byte
   int next_buffer_head = next_block_index(block_buffer_head);
 
