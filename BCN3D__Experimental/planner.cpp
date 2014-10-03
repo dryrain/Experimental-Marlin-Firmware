@@ -57,8 +57,7 @@
 #include "temperature.h"
 #include "ultralcd.h"
 #include "language.h"
-//#include "Hysteresis.h"
-#include "Hysteresis2.h"
+#include "Hysteresis.h"
 
 //===========================================================================
 //=============================public variables ============================
@@ -134,8 +133,8 @@ static int8_t prev_block_index(int8_t block_index) {
 //=============================functions============================
 //===========================================================================
 
-//Changes Rapduch
-//Saves/loads position to correct hysteresis deviation
+//Changes Dryrain
+//Saves/loads position
 void copy_position( float* ret_position )
 {
 	for(int i=0;i<NUM_AXIS;++i)
@@ -536,15 +535,12 @@ float junction_deviation = 0.1;
 // calculation the caller must also provide the physical length of the line in millimeters.
 void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder)
 {
-	//Rapduch
+	//Dryrain changes-----------------------
+	#ifdef HYSTERESIS_H
 	//Hysteresis correction if needed
-	SERIAL_PROTOCOLLN("Plan Buffer Line");
-	if (menu_hysteresis_correction>0 && hysteresis.done==0)
-	{	
-		SERIAL_PROTOCOLLN("Insert Correction");			
-		hysteresis.InsertCorrectionV2(x,y,z,e);
-	}
-	SERIAL_PROTOCOLLN("");
+	hysteresis.InsertCorrection(x,y,z,e);
+	#endif
+	//------------------------------
 	
   // Calculate the buffer head after we push this byte
   int next_buffer_head = next_block_index(block_buffer_head);

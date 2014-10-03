@@ -83,7 +83,8 @@
 	#define MSG_HYSTERESIS "Hystrsis"
 	#define MSG_HYST_CIRCLES "Circles"
 	#define MSG_HYST_OFF "Disable"
-	#define MSG_HYST_MANUAL "Manual"
+	#define MSG_HYST_MANUAL_X "Manual X"
+	#define MSG_HYST_MANUAL_Y "Manual Y"
 	//----
 	#define MSG_BED "Bed"
 	#define MSG_FAN_SPEED "Fan speed"
