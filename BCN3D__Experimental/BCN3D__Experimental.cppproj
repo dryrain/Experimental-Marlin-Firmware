@@ -137,7 +137,7 @@
     </ToolchainSettings>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM5</arduino.upload.port>
+        <arduino.upload.port>COM3</arduino.upload.port>
         <VM.DebugTextMessages.SerialWindow>0</VM.DebugTextMessages.SerialWindow>
         <arduino.board.name>mega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
@@ -300,7 +300,7 @@ build.arch=AVR
     </ToolchainSettings>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM5</arduino.upload.port>
+        <arduino.upload.port>COM3</arduino.upload.port>
         <VM.DebugTextMessages.SerialWindow>0</VM.DebugTextMessages.SerialWindow>
         <arduino.board.name>mega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
