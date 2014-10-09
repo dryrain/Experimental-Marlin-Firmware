@@ -25,7 +25,7 @@
 
 #include "Configuration.h"
 
-//Edit these constants if needed to set a default hysteresis. It is normally done trought LCD menu.
+//Edit these constants if needed to set a default hysteresis. It is normally done trough LCD menu.
 #define X_DEFAULT_HYSTERESIS_MM 0
 #define Y_DEFAULT_HYSTERESIS_MM 0.20
 
