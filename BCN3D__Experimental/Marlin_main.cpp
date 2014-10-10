@@ -392,19 +392,6 @@ void setup()
   setup_killpin();
   setup_powerhold();
   
-  //RapDuch LCD
-  //Serial2.begin(9600);
-  //pinMode(16,OUTPUT);//TX
-  //pinMode(17,OUTPUT);//RX
-  //pinMode(23,OUTPUT);//5V
-  //pinMode(25,OUTPUT);//GND
-  //pinMode(27,OUTPUT);//RES
-  //
-  //digitalWrite(23,HIGH);
-  //digitalWrite(25,LOW);
-  
-  
-  
   MYSERIAL.begin(BAUDRATE);
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START;
