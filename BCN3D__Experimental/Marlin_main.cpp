@@ -39,6 +39,9 @@
 #include "ConfigurationStore.h"
 #include "language.h"
 #include "pins_arduino.h"
+#include "HardwareSerial.h"
+
+#define UBRR2H
 
 #if NUM_SERVOS > 0
 #include "Servo.h"
@@ -391,17 +394,14 @@ void setup()
 {
   setup_killpin();
   setup_powerhold();
-  
+
   //RapDuch LCD
-  //Serial2.begin(9600);
-  //pinMode(16,OUTPUT);//TX
-  //pinMode(17,OUTPUT);//RX
-  //pinMode(23,OUTPUT);//5V
-  //pinMode(25,OUTPUT);//GND
-  //pinMode(27,OUTPUT);//RES
-  //
-  //digitalWrite(23,HIGH);
-  //digitalWrite(25,LOW);
+  //Serial1.begin(115200);
+  //MYSERIAL.begin(115200);
+
+  Serial2.begin(9600);
+  pinMode(23,OUTPUT);//RES
+  digitalWrite(23,HIGH);
   
   
   
