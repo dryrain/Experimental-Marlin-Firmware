@@ -83,7 +83,6 @@
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -125,7 +124,6 @@
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -137,7 +135,7 @@
     </ToolchainSettings>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM7</arduino.upload.port>
+        <arduino.upload.port>COM3</arduino.upload.port>
         <VM.DebugTextMessages.SerialWindow>0</VM.DebugTextMessages.SerialWindow>
         <arduino.board.name>mega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
@@ -246,7 +244,6 @@ build.arch=AVR
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -288,7 +285,6 @@ build.arch=AVR
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -300,7 +296,7 @@ build.arch=AVR
     </ToolchainSettings>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM7</arduino.upload.port>
+        <arduino.upload.port>COM3</arduino.upload.port>
         <VM.DebugTextMessages.SerialWindow>0</VM.DebugTextMessages.SerialWindow>
         <arduino.board.name>mega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>

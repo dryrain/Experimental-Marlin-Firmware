@@ -39,7 +39,7 @@
 #include "ConfigurationStore.h"
 #include "language.h"
 #include "pins_arduino.h"
-#include "HardwareSerial.h"
+//#include "HardwareSerial.h"
 
 #define UBRR2H
 
@@ -399,7 +399,7 @@ void setup()
   //Serial1.begin(115200);
   //MYSERIAL.begin(115200);
 
-  Serial2.begin(9600);
+  //Serial2.begin(9600);
   pinMode(23,OUTPUT);//RES
   digitalWrite(23,HIGH);
   
