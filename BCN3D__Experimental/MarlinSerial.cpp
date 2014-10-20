@@ -29,7 +29,7 @@
 #ifndef AT90USB
 // this next line disables the entire HardwareSerial.cpp, 
 // this is so I can support Attiny series and any other chip without a uart
-//#if defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H)
+#if defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H)
 
 #if UART_PRESENT(SERIAL_PORT)
   ring_buffer rx_buffer  =  { { 0 }, 0, 0 };
@@ -321,5 +321,5 @@ void MarlinSerial::printFloat(double number, uint8_t digits)
 
 MarlinSerial MSerial;
 
-//#endif // whole file
+#endif // whole file
 #endif // !AT90USB
