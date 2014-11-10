@@ -23,7 +23,7 @@
 #include "pins.h"
 
 #ifndef AT90USB
-#define  HardwareSerial_h // trick to disable the standard HWserial
+//#define  HardwareSerial_h // trick to disable the standard HWserial
 #endif
 
 #if (ARDUINO >= 100)
@@ -34,7 +34,7 @@
 # define analogInputToDigitalPin(p) ((p) + A0)
 #endif
 
-#include "MarlinSerial.h"
+//#include "MarlinSerial.h"
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -45,17 +45,20 @@
 
 #include "WString.h"
 
-#ifdef AT90USB
+//#ifdef AT90USB
   #define MYSERIAL Serial
-#else
-  #define MYSERIAL MSerial
-#endif
+  #define MYSERIAL_SCREEN Serial2
+  
+//#else
+  //#define MYSERIAL MSerial
+//#endif
 
 #define SERIAL_PROTOCOL(x) MYSERIAL.print(x);
 #define SERIAL_PROTOCOL_F(x,y) MYSERIAL.print(x,y);
 #define SERIAL_PROTOCOLPGM(x) serialprintPGM(PSTR(x));
 #define SERIAL_PROTOCOLLN(x) {MYSERIAL.print(x);MYSERIAL.write('\n');}
 #define SERIAL_PROTOCOLLNPGM(x) {serialprintPGM(PSTR(x));MYSERIAL.write('\n');}
+
 
 
 const char errormagic[] PROGMEM ="Error:";

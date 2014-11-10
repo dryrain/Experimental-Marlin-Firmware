@@ -548,6 +548,13 @@ static void lcd_move_z()
         if (current_position[Z_AXIS] > Z_MAX_POS)
             current_position[Z_AXIS] = Z_MAX_POS;
         encoderPosition = 0;
+		
+		SERIAL_PROTOCOLLN("Hi it's Jordi here on move z");
+		SERIAL_PROTOCOL("Testing Hardware Serial");
+		
+		//MYSERIAL.print("Hi it's Jordi here on move z");
+		//MYSERIAL.print("Testing Hardware Serial with print!");
+		
         plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], 60, active_extruder);
         lcdDrawUpdate = 1;		
     }

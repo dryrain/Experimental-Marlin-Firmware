@@ -84,12 +84,12 @@ void Config_StoreSettings()
   EEPROM_WRITE_VAR(i,pvaPreheatHotendTemp);
   EEPROM_WRITE_VAR(i,pvaPreheatHPBTemp);
   EEPROM_WRITE_VAR(i,pvaPreheatFanSpeed);  
-  EEPROM_WRITE_VAR(i,laywoodPreheatHotendTemp);
-  EEPROM_WRITE_VAR(i,laywoodPreheatHPBTemp);
-  EEPROM_WRITE_VAR(i,laywoodPreheatFanSpeed);
-  EEPROM_WRITE_VAR(i,laybrickPreheatHotendTemp);
-  EEPROM_WRITE_VAR(i,laybrickPreheatHPBTemp);
-  EEPROM_WRITE_VAR(i,laybrickPreheatFanSpeed);
+  //EEPROM_WRITE_VAR(i,laywoodPreheatHotendTemp);
+  //EEPROM_WRITE_VAR(i,laywoodPreheatHPBTemp);
+  //EEPROM_WRITE_VAR(i,laywoodPreheatFanSpeed);
+  //EEPROM_WRITE_VAR(i,laybrickPreheatHotendTemp);
+  //EEPROM_WRITE_VAR(i,laybrickPreheatHPBTemp);
+  //EEPROM_WRITE_VAR(i,laybrickPreheatFanSpeed);
   #ifdef PIDTEMP
     EEPROM_WRITE_VAR(i,Kp);
     EEPROM_WRITE_VAR(i,Ki);
@@ -217,12 +217,12 @@ void Config_RetrieveSettings()
         int laywoodPreheatHotendTemp, laywoodPreheatHPBTemp, laywoodPreheatFanSpeed;
         int laybrickPreheatHotendTemp, laybrickPreheatHPBTemp, laybrickPreheatFanSpeed;
         #endif
-        EEPROM_READ_VAR(i,plaPreheatHotendTemp);
-        EEPROM_READ_VAR(i,plaPreheatHPBTemp);
-        EEPROM_READ_VAR(i,plaPreheatFanSpeed);
-        EEPROM_READ_VAR(i,absPreheatHotendTemp);
-        EEPROM_READ_VAR(i,absPreheatHPBTemp);
-        EEPROM_READ_VAR(i,absPreheatFanSpeed);
+        //EEPROM_READ_VAR(i,plaPreheatHotendTemp);
+        //EEPROM_READ_VAR(i,plaPreheatHPBTemp);
+        //EEPROM_READ_VAR(i,plaPreheatFanSpeed);
+        //EEPROM_READ_VAR(i,absPreheatHotendTemp);
+        //EEPROM_READ_VAR(i,absPreheatHPBTemp);
+        //EEPROM_READ_VAR(i,absPreheatFanSpeed);
         EEPROM_READ_VAR(i,nylonPreheatHotendTemp);
         EEPROM_READ_VAR(i,nylonPreheatHPBTemp);
         EEPROM_READ_VAR(i,nylonPreheatFanSpeed);
@@ -297,12 +297,12 @@ void Config_ResetDefault()
     pvaPreheatHotendTemp = PVA_PREHEAT_HOTEND_TEMP;
     pvaPreheatHPBTemp = PVA_PREHEAT_HPB_TEMP;
     pvaPreheatFanSpeed = PVA_PREHEAT_FAN_SPEED;
-    int laywoodPreheatHotendTemp = LAYWOOD_PREHEAT_HOTEND_TEMP;
-    int laywoodPreheatHPBTemp = LAYWOOD_PREHEAT_HPB_TEMP;
-    int laywoodPreheatFanSpeed = LAYWOOD_PREHEAT_FAN_SPEED;
-    int laybrickPreheatHotendTemp = LAYBRICK_PREHEAT_HOTEND_TEMP;
-    int laybrickPreheatHPBTemp = LAYBRICK_PREHEAT_HPB_TEMP;
-    int laybrickPreheatFanSpeed = LAYBRICK_PREHEAT_FAN_SPEED;
+    //int laywoodPreheatHotendTemp = LAYWOOD_PREHEAT_HOTEND_TEMP;
+    //int laywoodPreheatHPBTemp = LAYWOOD_PREHEAT_HPB_TEMP;
+    //int laywoodPreheatFanSpeed = LAYWOOD_PREHEAT_FAN_SPEED;
+    //int laybrickPreheatHotendTemp = LAYBRICK_PREHEAT_HOTEND_TEMP;
+    //int laybrickPreheatHPBTemp = LAYBRICK_PREHEAT_HPB_TEMP;
+    //int laybrickPreheatFanSpeed = LAYBRICK_PREHEAT_FAN_SPEED;
 #endif
 #ifdef PIDTEMP
     Kp = DEFAULT_Kp;

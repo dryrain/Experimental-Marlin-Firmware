@@ -1,5 +1,4 @@
-#include <U8glib.h>
-
+#include <genieArduino.h>
 /* -*- c++ -*- */
 
 /*

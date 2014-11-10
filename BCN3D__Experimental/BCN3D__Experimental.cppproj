@@ -28,15 +28,15 @@
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.6.0" />
-        </dependencies>
-      </framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -54,10 +54,12 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -94,10 +96,12 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -215,10 +219,12 @@ build.arch=AVR
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -255,10 +261,12 @@ build.arch=AVR
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -416,12 +424,6 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Marlin.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MarlinSerial.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MarlinSerial.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Marlin_main.cpp">

@@ -40,6 +40,15 @@
 #include "language.h"
 #include "pins_arduino.h"
 
+//Rapduch
+#include <genieArduino.h>
+
+
+Genie genie;
+#define RESETLINE 23  
+void myGenieEventHandler();
+//-------------------------
+
 #if NUM_SERVOS > 0
 #include "Servo.h"
 #endif
@@ -389,40 +398,67 @@ void servo_init()
 
 void setup()
 {
+	//Rapduch
   setup_killpin();
   setup_powerhold();
-  
-  MYSERIAL.begin(BAUDRATE);
-  SERIAL_PROTOCOLLNPGM("start");
-  SERIAL_ECHO_START;
+ 
+	Serial.begin(250000);
+	MYSERIAL.println("Hi there this is Jordi's Test!");
+	
+	//Demo Visi genie
+	// NOTE, the genieBegin function (e.g. genieBegin(GENIE_SERIAL_0, 115200)) no longer exists.  Use a Serial Begin and serial port of your choice in
+	// your code and use the genie.Begin function to send it to the Genie library (see this example below)
+	// 200K Baud is good for most Arduinos. Galileo should use 115200.
+	Serial2.begin(200000);  // Serial2 @ 200000 (200K) Baud
+	genie.Begin(Serial2);   // Use Serial2 for talking to the Genie Library, and to the 4D Systems display
+	genie.AttachEventHandler(myGenieEventHandler); // Attach the user function Event Handler for processing events
 
+	// Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
+	// THIS IS IMPORTANT AND CAN PREVENT OUT OF SYNC ISSUES, SLOW SPEED RESPONSE ETC
+	// If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
+	// the 4D Arduino Adaptors invert this signal so must be Active High.
+	pinMode(RESETLINE, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
+	digitalWrite(RESETLINE, 0);  // Reset the Display via D4
+	delay(100);
+	digitalWrite(RESETLINE, 1);  // unReset the Display via D4
+	delay (3500); //let the display start up after the reset (This is important)
+
+	//Turn the Display on (Contrast) - (Not needed but illustrates how)
+	genie.WriteContrast(1); // 1 = Display ON, 0 = Display OFF.
+	//For uLCD43, uLCD-70DT, and uLCD-35DT, use 0-15 for Brightness Control, where 0 = Display OFF, though to 15 = Max Brightness ON.
+
+	//Write a string to the Display to show the version of the library used
+	genie.WriteStr(0, GENIE_VERSION);
+
+
+//Rapduch -- MYSERIAL = Serial; MYSERIAL_SCREEN = Serial2
   // Check startup - does nothing if bootloader sets MCUSR to 0
-  byte mcu = MCUSR;
-  if(mcu & 1) SERIAL_ECHOLNPGM(MSG_POWERUP);
-  if(mcu & 2) SERIAL_ECHOLNPGM(MSG_EXTERNAL_RESET);
-  if(mcu & 4) SERIAL_ECHOLNPGM(MSG_BROWNOUT_RESET);
-  if(mcu & 8) SERIAL_ECHOLNPGM(MSG_WATCHDOG_RESET);
-  if(mcu & 32) SERIAL_ECHOLNPGM(MSG_SOFTWARE_RESET);
+  //byte mcu = MCUSR;
+  //if(mcu & 1) SERIAL_ECHOLNPGM(MSG_POWERUP);
+  //if(mcu & 2) SERIAL_ECHOLNPGM(MSG_EXTERNAL_RESET);
+  //if(mcu & 4) SERIAL_ECHOLNPGM(MSG_BROWNOUT_RESET);
+  //if(mcu & 8) SERIAL_ECHOLNPGM(MSG_WATCHDOG_RESET);
+  //if(mcu & 32) SERIAL_ECHOLNPGM(MSG_SOFTWARE_RESET);
   MCUSR=0;
-
-  SERIAL_ECHOPGM(MSG_MARLIN);
-  SERIAL_ECHOLNPGM(VERSION_STRING);
-  #ifdef STRING_VERSION_CONFIG_H
-    #ifdef STRING_CONFIG_H_AUTHOR
-      SERIAL_ECHO_START;
-      SERIAL_ECHOPGM(MSG_CONFIGURATION_VER);
-      SERIAL_ECHOPGM(STRING_VERSION_CONFIG_H);
-      SERIAL_ECHOPGM(MSG_AUTHOR);
-      SERIAL_ECHOLNPGM(STRING_CONFIG_H_AUTHOR);
-      SERIAL_ECHOPGM("Compiled: ");
-      SERIAL_ECHOLNPGM(__DATE__);
-    #endif
-  #endif
-  SERIAL_ECHO_START;
-  SERIAL_ECHOPGM(MSG_FREE_MEMORY);
-  SERIAL_ECHO(freeMemory());
-  SERIAL_ECHOPGM(MSG_PLANNER_BUFFER_BYTES);
-  SERIAL_ECHOLN((int)sizeof(block_t)*BLOCK_BUFFER_SIZE);
+//
+  //SERIAL_ECHOPGM(MSG_MARLIN);
+  //SERIAL_ECHOLNPGM(VERSION_STRING);
+  //#ifdef STRING_VERSION_CONFIG_H
+    //#ifdef STRING_CONFIG_H_AUTHOR
+      //SERIAL_ECHO_START;
+      //SERIAL_ECHOPGM(MSG_CONFIGURATION_VER);
+      //SERIAL_ECHOPGM(STRING_VERSION_CONFIG_H);
+      //SERIAL_ECHOPGM(MSG_AUTHOR);
+      //SERIAL_ECHOLNPGM(STRING_CONFIG_H_AUTHOR);
+      //SERIAL_ECHOPGM("Compiled: ");
+      //SERIAL_ECHOLNPGM(__DATE__);
+    //#endif
+  //#endif
+  //SERIAL_ECHO_START;
+  //SERIAL_ECHOPGM(MSG_FREE_MEMORY);
+  //SERIAL_ECHO(freeMemory());
+  //SERIAL_ECHOPGM(MSG_PLANNER_BUFFER_BYTES);
+  //SERIAL_ECHOLN((int)sizeof(block_t)*BLOCK_BUFFER_SIZE);
   for(int8_t i = 0; i < BUFSIZE; i++)
   {
     fromsd[i] = false;
@@ -430,16 +466,15 @@ void setup()
 
   // loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
   Config_RetrieveSettings();
-
+//
   tp_init();    // Initialize temperature loop
   plan_init();  // Initialize planner;
-  watchdog_init();
+  //watchdog_init();
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
   servo_init();
-
-  lcd_init();
-  
+  ////lcd_init();
+  //
   #if defined(CONTROLLERFAN_PIN) && CONTROLLERFAN_PIN > -1
     SET_OUTPUT(CONTROLLERFAN_PIN); //Set pin used for driver cooling fan
   #endif 
@@ -448,6 +483,25 @@ void setup()
 
 void loop()
 {
+	
+	#pragma region unused
+//if (millis() >= waitPeriod)
+	//{
+		//// Write to CoolGauge0 with the value in the gaugeVal variable
+		//genie.WriteObject(GENIE_OBJ_COOL_GAUGE, 0x00, gaugeVal);
+		//gaugeVal += gaugeAddVal;
+		//if (gaugeVal == 99) gaugeAddVal = -1;
+		//if (gaugeVal == 0) gaugeAddVal = 1;
+//
+		//// The results of this call will be available to myGenieEventHandler() after the display has responded
+		//// Do a manual read from the UserLEd0 object
+		//genie.ReadObject(GENIE_OBJ_USER_LED, 0x00);
+//
+		//waitPeriod = millis() + 50; // rerun this code to update Cool Gauge and Slider in another 50ms time.
+	//}
+#pragma endregion unused
+	
+	//Rapduch
   if(buflen < (BUFSIZE-1))
     get_command();
   #ifdef SDSUPPORT
@@ -490,8 +544,196 @@ void loop()
   manage_heater();
   manage_inactivity();
   checkHitEndstops();
-  lcd_update();
+  //lcd_update(); 
+  
+  int tHotend=int(degHotend(0) + 0.5);
+  int tBed=int(degBed() + 0.5);
+  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x00, current_position[X_AXIS]);
+  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x01, current_position[Y_AXIS]);
+  genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
+  genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
+
+  genie.DoEvents(); // This calls the library each loop to process the queued responses from the display
 }
+
+
+void myGenieEventHandler(void)
+{
+	genieFrame Event;
+	genie.DequeueEvent(&Event);
+	static long waitPeriod = millis();
+	int move_mm = 10;
+
+	//If the cmd received is from a Reported Event (Events triggered from the Events tab of Workshop4 objects)
+	if (Event.reportObject.cmd == GENIE_REPORT_EVENT)
+	{
+		if (Event.reportObject.object == GENIE_OBJ_WINBUTTON)                // If the Reported Message was from a winbutton
+		{
+			float modified_position;
+			if (Event.reportObject.index == 0)                              // If Winbutton0
+			{
+				Serial.println("Right");
+				modified_position=current_position[X_AXIS]+move_mm;
+				if (modified_position < X_MIN_POS)modified_position = X_MIN_POS;
+				if (modified_position > X_MAX_POS)modified_position = X_MAX_POS;
+				plan_buffer_line(modified_position, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);			
+				current_position[X_AXIS]=modified_position;
+			}
+			else if (Event.reportObject.index == 1)                              // If Winbutton1
+			{
+				Serial.println("Left");
+				modified_position=current_position[X_AXIS]-move_mm;
+				if (modified_position < X_MIN_POS)modified_position = X_MIN_POS;
+				if (modified_position > X_MAX_POS)modified_position = X_MAX_POS;
+				plan_buffer_line(modified_position, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
+				current_position[X_AXIS]=modified_position;
+			}
+			else if (Event.reportObject.index == 2)                              // If Winbutton2
+			{
+				Serial.println("Down");
+				modified_position=current_position[Y_AXIS]-move_mm;
+				if (modified_position < Y_MIN_POS)modified_position = Y_MIN_POS;
+				if (modified_position > Y_MAX_POS)modified_position = Y_MAX_POS;
+				plan_buffer_line(current_position[X_AXIS], modified_position, current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
+				current_position[Y_AXIS]=modified_position;
+			}
+			else if (Event.reportObject.index == 3)                              // If Winbutton3
+			{
+				Serial.println("Up");
+				modified_position=current_position[Y_AXIS]+move_mm;
+				if (modified_position < Y_MIN_POS)modified_position = Y_MIN_POS;
+				if (modified_position > Y_MAX_POS)modified_position = Y_MAX_POS;
+				plan_buffer_line(current_position[X_AXIS], modified_position, current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
+				current_position[Y_AXIS]=modified_position;
+			}
+			else if (Event.reportObject.index == 4)                              // If Winbutton4
+			{
+				if (millis() >= waitPeriod){
+					Serial.println("HOME");
+					enquecommand_P((PSTR("G28")));
+					waitPeriod=millis()+50;
+				}			
+			}
+			
+			else if (Event.reportObject.index == 5)
+			{
+				int value = genie.GetEventData(&Event);
+				if (value == 1) // Need to preheat
+				{
+					setTargetHotend0(200);
+					setTargetBed(50);
+					//Serial.println("Heating Baby!");
+				}
+				else
+				{
+					setTargetHotend0(0);
+					setTargetBed(0);
+					//Serial.println("Cooling !!!");
+				}
+			
+			}
+			if (Event.reportObject.object == GENIE_OBJ_4DBUTTON) 
+			{
+				if (Event.reportObject.index == 1)
+				{
+					int value = genie.GetEventData(&Event);
+					if (value == 1) // Need to preheat
+					{
+						setTargetHotend0(200);
+						setTargetBed(50);
+						//Serial.println("Heating Baby!");
+					}
+					else
+					{
+						setTargetHotend0(0);
+						setTargetBed(0);
+						//Serial.println("Cooling !!!");
+					}
+				}
+			}
+		
+			if (Event.reportObject.object == GENIE_OBJ_FORM)
+			{
+				if (Event.reportObject.index == 2)
+				{					
+					////Check sdcardFiles
+					card.initsd();				
+					uint16_t fileCnt = card.getnrfilenames();		
+					card.getWorkDirName();
+					//Text index starts at 0
+					uint16_t string_text_index=0;		
+					for(uint16_t i=0;i<fileCnt;i++)
+					{
+						card.getfilename(i);
+						if (card.filenameIsDir)
+						{
+							//Is a folder
+							genie.WriteStr(string_text_index,card.filename);
+						}else{
+							//Is a file
+							genie.WriteStr(string_text_index,card.filename);
+							//Try to hide file image-- not possible though
+							//genie.WriteObject(GENIE_OBJ_IMAGE,string_text_index,0);													
+						}
+					
+					}
+				}
+				
+			}
+		}
+	//Place to hold code--------------
+	//#ifdef SDSUPPORT
+	//CardReader card;
+	//#endif
+	
+	//char cmd[30];
+	//char* c;
+	//sprintf_P(cmd, PSTR("M23 %s"), filename);
+	//for(c = &cmd[4]; *c; c++)
+	//*c = tolower(*c);
+	//enquecommand(cmd);
+	//enquecommand_P(PSTR("M24"));
+	//--------------------------------
+
+	//If the cmd received is from a Reported Object, which occurs if a Read Object (genie.ReadOject) is requested in the main code, reply processed here.
+	//if (Event.reportObject.cmd == GENIE_REPORT_OBJ)
+	//{
+		//if (Event.reportObject.object == GENIE_OBJ_USER_LED)              // If the Reported Message was from a User LED
+		//{
+			//if (Event.reportObject.index == 0)                              // If UserLed0
+			//{
+				//bool UserLed0_val = genie.GetEventData(&Event);               // Receive the event data from the UserLed0
+				//UserLed0_val = !UserLed0_val;                                 // Toggle the state of the User LED Variable
+				//genie.WriteObject(GENIE_OBJ_USER_LED, 0x00, UserLed0_val);    // Write UserLed0_val value back to to UserLed0
+			//}
+		//}
+	//}
+
+	//This can be expanded as more objects are added that need to be captured
+
+	//Event.reportObject.cmd is used to determine the command of that event, such as an reported event
+	//Event.reportObject.object is used to determine the object type, such as a Slider
+	//Event.reportObject.index is used to determine the index of the object, such as Slider0
+	//genie.GetEventData(&Event) us used to save the data from the Event, into a variable.
+	}
+}
+
+//Rapduch
+//Needs to modify waiting time... thinking in C++
+bool timepassed(long waiting_time)
+{
+	
+	if (millis()>waiting_time)
+	{
+		waiting_time=millis()+50;
+		return true;
+	}
+	else {
+		waiting_time=millis()+50;
+		return false;
+	}
+}
+
 
 void get_command()
 {
