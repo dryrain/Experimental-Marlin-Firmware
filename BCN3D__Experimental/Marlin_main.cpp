@@ -599,12 +599,15 @@ void myGenieEventHandler(void)
 			}
 			else if (Event.reportObject.index == 3)                              // If Winbutton3
 			{
-				Serial.println("Up");
-				modified_position=current_position[Y_AXIS]+move_mm;
-				if (modified_position < Y_MIN_POS)modified_position = Y_MIN_POS;
-				if (modified_position > Y_MAX_POS)modified_position = Y_MAX_POS;
-				plan_buffer_line(current_position[X_AXIS], modified_position, current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
-				current_position[Y_AXIS]=modified_position;
+				if (millis() >= waitPeriod){
+					Serial.println("Up");
+					modified_position=current_position[Y_AXIS]+move_mm;
+					if (modified_position < Y_MIN_POS)modified_position = Y_MIN_POS;
+					if (modified_position > Y_MAX_POS)modified_position = Y_MAX_POS;
+					plan_buffer_line(current_position[X_AXIS], modified_position, current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
+					current_position[Y_AXIS]=modified_position;
+					waitPeriod=millis()+50;
+				}
 			}
 			else if (Event.reportObject.index == 4)                              // If Winbutton4
 			{
@@ -632,68 +635,115 @@ void myGenieEventHandler(void)
 				}
 			
 			}
-			if (Event.reportObject.object == GENIE_OBJ_4DBUTTON) 
+			
+			//SD
+			else if (Event.reportObject.index == 5)
 			{
-				if (Event.reportObject.index == 1)
+				char cmd[30];
+				char* c;
+				card.getfilename(1);
+				sprintf_P(cmd, PSTR("M23 %s"), card.filename);
+				for(c = &cmd[4]; *c; c++)
 				{
-					int value = genie.GetEventData(&Event);
-					if (value == 1) // Need to preheat
-					{
-						setTargetHotend0(200);
-						setTargetBed(50);
-						//Serial.println("Heating Baby!");
-					}
-					else
-					{
-						setTargetHotend0(0);
-						setTargetBed(0);
-						//Serial.println("Cooling !!!");
-					}
+					*c = tolower(*c);
 				}
+				enquecommand(cmd);
+				enquecommand_P(PSTR("M24"));
 			}
+			
+		}
 		
-			if (Event.reportObject.object == GENIE_OBJ_FORM)
+		
+		//if (Event.reportObject.object == GENIE_OBJ_4DBUTTON) 
+		//{
+			//
+			//if (Event.reportObject.index == 1)
+			//{
+				//int value = genie.GetEventData(&Event);
+				//if (value == 1) // Need to preheat
+				//{
+					//setTargetHotend0(200);
+					//setTargetBed(50);
+					////Serial.println("Heating Baby!");
+				//}
+				//else
+				//{
+					//setTargetHotend0(0);
+					//setTargetBed(0);
+					////Serial.println("Cooling !!!");
+				//}
+			//}
+		//}
+		
+		if (Event.reportObject.object == GENIE_OBJ_USERBUTTON) //Userbuttons to select GCODE from SD
+		{
+			if (Event.reportObject.index == 5 )
 			{
-				if (Event.reportObject.index == 2)
-				{					
-					////Check sdcardFiles
-					card.initsd();				
-					uint16_t fileCnt = card.getnrfilenames();		
-					card.getWorkDirName();
-					//Text index starts at 0
-					uint16_t string_text_index=0;		
-					for(uint16_t i=0;i<fileCnt;i++)
-					{
-						card.getfilename(i);
-						if (card.filenameIsDir)
-						{
-							//Is a folder
-							genie.WriteStr(string_text_index,card.filename);
-						}else{
-							//Is a file
-							genie.WriteStr(string_text_index,card.filename);
-							//Try to hide file image-- not possible though
-							//genie.WriteObject(GENIE_OBJ_IMAGE,string_text_index,0);													
-						}
-					
-					}
+				char cmd[30];
+				char* c;
+				card.getfilename(2);
+				sprintf_P(cmd, PSTR("M23 %s"), card.filename);
+				for(c = &cmd[4]; *c; c++)
+				{
+					*c = tolower(*c);
 				}
-				
+				enquecommand(cmd);
+				enquecommand_P(PSTR("M24"));
 			}
 		}
-	//Place to hold code--------------
-	//#ifdef SDSUPPORT
-	//CardReader card;
-	//#endif
+		
+		if (Event.reportObject.object == GENIE_OBJ_ANIBUTTON) //AniButtons to select GCODE from SD
+		{
+			if (Event.reportObject.index == 0 || Event.reportObject.index == 1 || Event.reportObject.index == 2)
+			{
+				char cmd[30];
+				char* c;
+				card.getWorkDirName();
+				card.getfilename(Event.reportObject.index);
+				sprintf_P(cmd, PSTR("M23 %s"), card.filename);
+				for(c = &cmd[4]; *c; c++)
+				{
+					*c = tolower(*c);
+				}
+				enquecommand(cmd);
+				enquecommand_P(PSTR("M24"));
+			}
+		}
+		
+		
+		if (Event.reportObject.object == GENIE_OBJ_FORM)
+		{
+			if (Event.reportObject.index == 2)
+			{	
+				Serial.println("Form 2!");				
+				////Check sdcardFiles
+				//card.initsd();				
+				uint16_t fileCnt = card.getnrfilenames();
+				int nfiles_display = 3;		
+				card.getWorkDirName();
+				//Text index starts at 0
+				uint16_t string_text_index=0;		
+				//for(uint16_t i=0;i<fileCnt;i++) // We only show 3 files per screen
+				for(uint16_t i=0;i<nfiles_display;i++)
+				{
+					card.getfilename(i);
+					if (card.filenameIsDir)
+					{
+						//Is a folder
+						genie.WriteStr(i,card.longFilename);
+						genie.WriteObject(GENIE_OBJ_USERIMAGES,i,0);
+					}else{
+						//Is a file
+						genie.WriteStr(i,card.longFilename);
+						genie.WriteObject(GENIE_OBJ_USERIMAGES,i,1);
+						//Try to hide file image-- not possible though
+						//genie.WriteObject(GENIE_OBJ_IMAGE,string_text_index,0);													
+					}
+					//string_text_index=i+1;
+				}
+			}							
+		}
 	
-	//char cmd[30];
-	//char* c;
-	//sprintf_P(cmd, PSTR("M23 %s"), filename);
-	//for(c = &cmd[4]; *c; c++)
-	//*c = tolower(*c);
-	//enquecommand(cmd);
-	//enquecommand_P(PSTR("M24"));
-	//--------------------------------
 
 	//If the cmd received is from a Reported Object, which occurs if a Read Object (genie.ReadOject) is requested in the main code, reply processed here.
 	//if (Event.reportObject.cmd == GENIE_REPORT_OBJ)
