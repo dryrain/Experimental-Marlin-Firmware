@@ -5,9 +5,11 @@
 #include "temperature.h"
 #include "language.h"
 
+#include <genieArduino.h>
+
+extern Genie genie;
+
 #ifdef SDSUPPORT
-
-
 
 CardReader::CardReader()
 {
@@ -551,6 +553,10 @@ void CardReader::printingHasFinished()
     quickStop();
     file.close();
     sdprinting = false;
+	
+	//Rapduch
+	genie.WriteObject(GENIE_OBJ_FORM,0,0);
+	
     if(SD_FINISHED_STEPPERRELEASE)
     {
         //finishAndDisableSteppers();

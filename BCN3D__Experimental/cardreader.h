@@ -72,6 +72,7 @@ private:
   char* diveDirName;
   void lsDive(const char *prepend,SdFile parent);
 };
+//Rapduch
 extern CardReader card;
 #define IS_SD_PRINTING (card.sdprinting)
 
