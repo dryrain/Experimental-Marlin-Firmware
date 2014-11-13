@@ -28,15 +28,15 @@
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -54,12 +54,12 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -67,7 +67,7 @@
             <Value>C:\Program Files\Arduino\libraries</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\reprap\Documents\libraries</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
@@ -96,12 +96,12 @@
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -109,7 +109,7 @@
             <Value>C:\Program Files\Arduino\libraries</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\reprap\Documents\libraries</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
@@ -186,7 +186,7 @@ ide.url=http://arduino.cc/en/Main/Software
 vm.debug=true
 software=ARDUINO
 ide.appid=arduino10x
-location.sketchbook=C:\Users\reprap\Documents
+location.sketchbook=C:\Users\jcalduch\Documents
 build.board=AVR_MEGA2560
 vm.boardsource.path=C:\Program Files\Arduino\hardware\arduino
 vm.platformname.name=avr
@@ -219,12 +219,12 @@ build.arch=AVR
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -232,7 +232,7 @@ build.arch=AVR
             <Value>C:\Program Files\Arduino\libraries</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\reprap\Documents\libraries</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
@@ -261,12 +261,12 @@ build.arch=AVR
           <ListValues>
             <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino</Value>
-            <Value>C:\Users\reprap\Documents\libraries\genieArduino\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\genieArduino\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib</Value>
-            <Value>C:\Users\reprap\Documents\libraries\U8glib\utility</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries\U8glib\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal</Value>
             <Value>C:\Program Files\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files\Arduino\libraries\SPI</Value>
@@ -274,7 +274,7 @@ build.arch=AVR
             <Value>C:\Program Files\Arduino\libraries</Value>
             <Value>C:\Program Files\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\reprap\Documents\libraries</Value>
+            <Value>C:\Users\jcalduch\Documents\libraries</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
             <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
@@ -351,7 +351,7 @@ ide.url=http://arduino.cc/en/Main/Software
 vm.debug=true
 software=ARDUINO
 ide.appid=arduino10x
-location.sketchbook=C:\Users\reprap\Documents
+location.sketchbook=C:\Users\jcalduch\Documents
 build.board=AVR_MEGA2560
 vm.boardsource.path=C:\Program Files\Arduino\hardware\arduino
 vm.platformname.name=avr

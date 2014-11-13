@@ -632,8 +632,7 @@ void myGenieEventHandler(void)
 					setTargetHotend0(0);
 					setTargetBed(0);
 					//Serial.println("Cooling !!!");
-				}
-				genie.WriteObject(GENIE_OBJ_FORM,0,1);
+				}			
 			}
 			
 			//SD
@@ -649,6 +648,7 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
+				genie.WriteObject(GENIE_OBJ_FORM,3,1);
 			}
 			
 		}
@@ -689,6 +689,7 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
+				genie.WriteObject(GENIE_OBJ_FORM,3,1);
 				
 			}
 		}
@@ -708,6 +709,7 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
+				genie.WriteObject(GENIE_OBJ_FORM,3,1);
 			}
 		}
 		
