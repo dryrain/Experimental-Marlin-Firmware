@@ -689,8 +689,7 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
-				genie.WriteObject(GENIE_OBJ_FORM,3,1);
-				
+				genie.WriteObject(GENIE_OBJ_FORM,3,1);		
 			}
 		}
 		
