@@ -414,6 +414,9 @@ build.arch=AVR
     <Compile Include="Hysteresis.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Touch_Screen_Definitions.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="language.h">
       <SubType>compile</SubType>
     </Compile>

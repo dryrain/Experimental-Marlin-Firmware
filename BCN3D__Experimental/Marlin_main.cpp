@@ -423,6 +423,8 @@ void setup()
 	digitalWrite(RESETLINE, 1);  // unReset the Display via D4
 	delay (3500); //let the display start up after the reset (This is important)
 
+	genie.WriteObject(GENIE_OBJ_FORM,5,1);
+
 	//Turn the Display on (Contrast) - (Not needed but illustrates how)
 	genie.WriteContrast(1); // 1 = Display ON, 0 = Display OFF.
 	//For uLCD43, uLCD-70DT, and uLCD-35DT, use 0-15 for Brightness Control, where 0 = Display OFF, though to 15 = Max Brightness ON.
@@ -691,6 +693,10 @@ void myGenieEventHandler(void)
 				enquecommand_P(PSTR("M24"));
 				genie.WriteObject(GENIE_OBJ_FORM,3,1);		
 			}
+			
+			
+			
+			
 		}
 		
 		if (Event.reportObject.object == GENIE_OBJ_ANIBUTTON) //AniButtons to select GCODE from SD
