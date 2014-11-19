@@ -42,7 +42,7 @@
 
 //Rapduch
 #include <genieArduino.h>
-
+#include "Touch_Screen_Definitions.h"
 
 Genie genie;
 #define RESETLINE 23  
@@ -214,6 +214,8 @@ static float offset[3] = {0.0, 0.0, 0.0};
 static bool home_all_axis = true;
 static float feedrate = 1500.0, next_feedrate, saved_feedrate;
 static long gcode_N, gcode_LastN, Stopped_gcode_LastN = 0;
+
+static bool lcd_oldcardstatus;
 
 static bool relative_mode = false;  //Determines Absolute or Relative Coordinates
 
@@ -412,7 +414,6 @@ void setup()
 	Serial2.begin(200000);  // Serial2 @ 200000 (200K) Baud
 	genie.Begin(Serial2);   // Use Serial2 for talking to the Genie Library, and to the 4D Systems display
 	genie.AttachEventHandler(myGenieEventHandler); // Attach the user function Event Handler for processing events
-
 	// Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
 	// THIS IS IMPORTANT AND CAN PREVENT OUT OF SYNC ISSUES, SLOW SPEED RESPONSE ETC
 	// If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
@@ -422,6 +423,7 @@ void setup()
 	delay(100);
 	digitalWrite(RESETLINE, 1);  // unReset the Display via D4
 	delay (3500); //let the display start up after the reset (This is important)
+	delay (3500); //showing the splash screen
 
 	genie.WriteObject(GENIE_OBJ_FORM,5,1);
 
@@ -475,8 +477,11 @@ void setup()
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
   servo_init();
+  //card.initsd();
   ////lcd_init();
-  //
+  
+  lcd_oldcardstatus=true;
+  
   #if defined(CONTROLLERFAN_PIN) && CONTROLLERFAN_PIN > -1
     SET_OUTPUT(CONTROLLERFAN_PIN); //Set pin used for driver cooling fan
   #endif 
@@ -546,6 +551,25 @@ void loop()
   manage_heater();
   manage_inactivity();
   checkHitEndstops();
+  
+  ////TODO: Make a continuous check if SD is plugged - Use a free digital pin in our motherboard 
+  ////Rapduch
+  ////It checks whether the SD card is plugged at loop time.
+   //if((IS_SD_INSERTED != lcd_oldcardstatus))
+   //{
+	   //lcd_oldcardstatus = IS_SD_INSERTED;
+		   //
+	   //if(lcd_oldcardstatus)
+	   //{
+		   //card.initsd();		   
+	   //}
+	   //else
+	   //{
+		   //card.release();	   
+	   //}
+   //}
+   //
+  
   //lcd_update(); 
   
   int tHotend=int(degHotend(0) + 0.5);
@@ -638,7 +662,7 @@ void myGenieEventHandler(void)
 			}
 			
 			//SD
-			else if (Event.reportObject.index == 5)
+			else if (Event.reportObject.index == 6)
 			{
 				char cmd[30];
 				char* c;
@@ -650,33 +674,38 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
-				genie.WriteObject(GENIE_OBJ_FORM,3,1);
+				genie.WriteObject(GENIE_OBJ_FORM,9,1);
 			}
 			
+			
+			else if (Event.reportObject.index == 7)                              // If Winbutton7 Button Z
+			{
+				if (millis() >= waitPeriod){
+					Serial.println("Up");
+					modified_position=current_position[Z_AXIS]+move_mm;
+					if (modified_position < Z_MIN_POS)modified_position = Z_MIN_POS;
+					if (modified_position > Z_MAX_POS)modified_position = Z_MAX_POS;
+					plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], modified_position, current_position[E_AXIS], 600, active_extruder);
+					current_position[Z_AXIS]=modified_position;
+					waitPeriod=millis()+50;
+				}
+			}
+			
+			else if (Event.reportObject.index == 8)                              // If Winbutton8
+			{
+				if (millis() >= waitPeriod){
+					Serial.println("Up");
+					modified_position=current_position[Y_AXIS]-move_mm;
+					if (modified_position < Z_MIN_POS)modified_position = Z_MIN_POS;
+					if (modified_position > Z_MAX_POS)modified_position = Z_MAX_POS;
+					plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], modified_position, current_position[E_AXIS], 600, active_extruder);
+					current_position[Z_AXIS]=modified_position;
+					waitPeriod=millis()+50;
+				}
+			}		
 		}
 		
-		
-		//if (Event.reportObject.object == GENIE_OBJ_4DBUTTON) 
-		//{
-			//
-			//if (Event.reportObject.index == 1)
-			//{
-				//int value = genie.GetEventData(&Event);
-				//if (value == 1) // Need to preheat
-				//{
-					//setTargetHotend0(200);
-					//setTargetBed(50);
-					////Serial.println("Heating Baby!");
-				//}
-				//else
-				//{
-					//setTargetHotend0(0);
-					//setTargetBed(0);
-					////Serial.println("Cooling !!!");
-				//}
-			//}
-		//}
-		
+		//Userbuttons
 		if (Event.reportObject.object == GENIE_OBJ_USERBUTTON) //Userbuttons to select GCODE from SD
 		{
 			if (Event.reportObject.index == 5 )
@@ -691,13 +720,51 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
-				genie.WriteObject(GENIE_OBJ_FORM,3,1);		
+				genie.WriteObject(GENIE_OBJ_FORM,9,1);		
+			}	
+			
+				
+			if (Event.reportObject.index == BUTTON_PAUSE )
+			{
+				int value = genie.GetEventData(&Event);
+				if (value == 1) // Need to preheat
+				{
+					//Button Pressed ON					
+					card.pauseSDPrint();				
+				}	
+				else
+				{
+					card.startFileprint();					
+				}			
 			}
 			
+			if (Event.reportObject.index == BUTTON_STOP )
+			{
+				card.sdprinting = false;
+				card.closefile();
+				quickStop();
+				
+				//Rapduch
+				genie.WriteObject(GENIE_OBJ_FORM,5,1);
+				
+				if(SD_FINISHED_STEPPERRELEASE)
+				{
+					enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
+				}
+				autotempShutdown();
+			}		
 			
+			if (Event.reportObject.index == BUTTON_SPEED_UP )
+			{
+								
+			}
 			
-			
+			if (Event.reportObject.index == BUTTON_SPEED_DOWN )
+			{
+							
+			}
 		}
+					
 		
 		if (Event.reportObject.object == GENIE_OBJ_ANIBUTTON) //AniButtons to select GCODE from SD
 		{
@@ -714,7 +781,7 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
-				genie.WriteObject(GENIE_OBJ_FORM,3,1);
+				genie.WriteObject(GENIE_OBJ_FORM,9,1);
 			}
 		}
 		
@@ -725,7 +792,7 @@ void myGenieEventHandler(void)
 			{	
 				Serial.println("Form 2!");				
 				////Check sdcardFiles
-				//card.initsd();				
+				card.initsd();				
 				uint16_t fileCnt = card.getnrfilenames();
 				int nfiles_display = 3;		
 				card.getWorkDirName();
