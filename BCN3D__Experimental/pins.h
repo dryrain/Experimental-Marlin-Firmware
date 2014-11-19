@@ -309,7 +309,7 @@
 #endif
 
 //rapduch
-#define SDCARDDETECT -1
+//#define SDCARDDETECT -1
 
 
 // uncomment one of the following lines for RAMPS v1.3 or v1.0, comment both for v1.2 or 1.1

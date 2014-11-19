@@ -407,32 +407,32 @@ void setup()
 	Serial.begin(250000);
 	MYSERIAL.println("Hi there this is Jordi's Test!");
 	
-	//Demo Visi genie
-	// NOTE, the genieBegin function (e.g. genieBegin(GENIE_SERIAL_0, 115200)) no longer exists.  Use a Serial Begin and serial port of your choice in
-	// your code and use the genie.Begin function to send it to the Genie library (see this example below)
-	// 200K Baud is good for most Arduinos. Galileo should use 115200.
-	Serial2.begin(200000);  // Serial2 @ 200000 (200K) Baud
-	genie.Begin(Serial2);   // Use Serial2 for talking to the Genie Library, and to the 4D Systems display
-	genie.AttachEventHandler(myGenieEventHandler); // Attach the user function Event Handler for processing events
-	// Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
-	// THIS IS IMPORTANT AND CAN PREVENT OUT OF SYNC ISSUES, SLOW SPEED RESPONSE ETC
-	// If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
-	// the 4D Arduino Adaptors invert this signal so must be Active High.
-	pinMode(RESETLINE, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
-	digitalWrite(RESETLINE, 0);  // Reset the Display via D4
-	delay(100);
-	digitalWrite(RESETLINE, 1);  // unReset the Display via D4
-	delay (3500); //let the display start up after the reset (This is important)
-	delay (3500); //showing the splash screen
-
-	genie.WriteObject(GENIE_OBJ_FORM,5,1);
-
-	//Turn the Display on (Contrast) - (Not needed but illustrates how)
-	genie.WriteContrast(1); // 1 = Display ON, 0 = Display OFF.
-	//For uLCD43, uLCD-70DT, and uLCD-35DT, use 0-15 for Brightness Control, where 0 = Display OFF, though to 15 = Max Brightness ON.
-
-	//Write a string to the Display to show the version of the library used
-	genie.WriteStr(0, GENIE_VERSION);
+	////Demo Visi genie
+	//// NOTE, the genieBegin function (e.g. genieBegin(GENIE_SERIAL_0, 115200)) no longer exists.  Use a Serial Begin and serial port of your choice in
+	//// your code and use the genie.Begin function to send it to the Genie library (see this example below)
+	//// 200K Baud is good for most Arduinos. Galileo should use 115200.
+	//Serial2.begin(200000);  // Serial2 @ 200000 (200K) Baud
+	//genie.Begin(Serial2);   // Use Serial2 for talking to the Genie Library, and to the 4D Systems display
+	//genie.AttachEventHandler(myGenieEventHandler); // Attach the user function Event Handler for processing events
+	//// Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
+	//// THIS IS IMPORTANT AND CAN PREVENT OUT OF SYNC ISSUES, SLOW SPEED RESPONSE ETC
+	//// If NOT using a 4D Arduino Adaptor, digitalWrites must be reversed as Display Reset is Active Low, and
+	//// the 4D Arduino Adaptors invert this signal so must be Active High.
+	//pinMode(RESETLINE, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
+	//digitalWrite(RESETLINE, 0);  // Reset the Display via D4
+	//delay(100);
+	//digitalWrite(RESETLINE, 1);  // unReset the Display via D4
+	//delay (3500); //let the display start up after the reset (This is important)
+	//delay (3500); //showing the splash screen
+//
+	//genie.WriteObject(GENIE_OBJ_FORM,5,1);
+//
+	////Turn the Display on (Contrast) - (Not needed but illustrates how)
+	//genie.WriteContrast(1); // 1 = Display ON, 0 = Display OFF.
+	////For uLCD43, uLCD-70DT, and uLCD-35DT, use 0-15 for Brightness Control, where 0 = Display OFF, though to 15 = Max Brightness ON.
+//
+	////Write a string to the Display to show the version of the library used
+	//genie.WriteStr(0, GENIE_VERSION);
 
 
 //Rapduch -- MYSERIAL = Serial; MYSERIAL_SCREEN = Serial2
@@ -478,7 +478,7 @@ void setup()
   setup_photpin();
   servo_init();
   //card.initsd();
-  ////lcd_init();
+  lcd_init();
   
   lcd_oldcardstatus=true;
   
@@ -570,16 +570,16 @@ void loop()
    //}
    //
   
-  //lcd_update(); 
+  lcd_update(); 
   
   int tHotend=int(degHotend(0) + 0.5);
   int tBed=int(degBed() + 0.5);
-  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x00, current_position[X_AXIS]);
-  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x01, current_position[Y_AXIS]);
-  genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
-  genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
+  //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x00, current_position[X_AXIS]);
+  //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x01, current_position[Y_AXIS]);
+  //genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
+  //genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
 
-  genie.DoEvents(); // This calls the library each loop to process the queued responses from the display
+  //genie.DoEvents(); // This calls the library each loop to process the queued responses from the display
 }
 
 
