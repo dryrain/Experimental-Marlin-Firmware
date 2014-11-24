@@ -33,6 +33,7 @@
 #include "ultralcd.h"
 #include "temperature.h"
 #include "watchdog.h"
+#include "cardreader.h"
 
 //===========================================================================
 //=============================public variables============================
@@ -43,6 +44,15 @@ int current_temperature_raw[EXTRUDERS] = { 0 };
 float current_temperature[EXTRUDERS] = { 0.0 };
 int current_temperature_bed_raw = 0;
 float current_temperature_bed = 0.0;
+
+
+//Rapduch
+int seconds=0;
+int counter_seconds=0;
+int counter_minutes=0;
+int counter_hours=0;
+
+
 #ifdef TEMP_SENSOR_1_AS_REDUNDANT
   int redundant_temperature_raw = 0;
   float redundant_temperature = 0.0;
@@ -1049,6 +1059,76 @@ int read_max6675()
 // Timer 0 is shared with millies
 ISR(TIMER0_COMPB_vect)
 {
+	
+	//Rapduch
+	seconds++;
+	//if (seconds == 1000 && card.sdprinting) //Access at 1 second
+	if (seconds == 1000)
+	{
+		seconds = 0;		
+		int tHotend=int(degHotend(0) + 0.5);
+		int tBed=int(degBed() + 0.5);
+		
+		//Serial.print("Temp Hotend: ");
+		//Serial.println(tHotend);
+		counter_seconds++;
+		
+		//if(counter_seconds % 2== 0) //Parell
+		//{
+			//genie.WriteObject_RepRap(GENIE_OBJ_LED,0x00,1);
+		//}
+		//genie.WriteObject_RepRap(GENIE_OBJ_LED,0x00,0);
+		
+		if(counter_seconds==60) {
+			counter_minutes++;
+			counter_seconds=0;
+		}
+		if(counter_minutes==60){
+			counter_hours++;
+			counter_minutes=0;
+		}
+		if(counter_hours==100) counter_hours=0;
+		//genie.DoEvents(); 
+		//genie.WriteObject_RepRap(GENIE_OBJ_THERMOMETER,0x00, tHotend);
+		//genie.DoEvents(); 
+		//genie.WriteObject_RepRap(GENIE_OBJ_THERMOMETER,0x01, tBed);
+		//genie.DoEvents(); 
+		//genie.WriteObject_RepRap(GENIE_OBJ_LED_DIGITS, 0x06, counter_seconds);
+		//genie.DoEvents(); 
+	    //genie.WriteObject_RepRap(GENIE_OBJ_LED_DIGITS, 0x05, counter_minutes);
+		//genie.DoEvents(); 
+		//genie.WriteObject_RepRap(GENIE_OBJ_LED_DIGITS, 0x04, counter_hours);
+		//genie.DoEvents(); 
+		
+		//genie.DoEvents(); 
+		
+		//Serial2.write(0x01);
+		//Serial2.write(0x12);
+		//Serial2.write(0x01);
+		//Serial2.write(0x00);
+		//Serial2.write(0x32);
+		//Serial2.write(0x20);
+		
+	}//else{
+	
+	  
+	  
+	  
+	  //genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x03, feedmultiply);
+//
+	  //genie.DoEvents();
+	//
+	
+	
+	//Serial2.write(0x01);
+	//Serial2.write(0x12);
+	//Serial2.write(0x01);
+	//Serial2.write(0x00);
+	//Serial2.write(0x32);
+	//Serial2.write(0x20);
+	
+	
+	
   //these variables are only accesible from the ISR, but static, so they don't lose their value
   static unsigned char temp_count = 0;
   static unsigned long raw_temp_0_value = 0;
@@ -1287,6 +1367,7 @@ ISR(TIMER0_COMPB_vect)
 #endif
   }
 }
+	//} //for the else at seconds
 
 
 #ifdef PIDTEMP

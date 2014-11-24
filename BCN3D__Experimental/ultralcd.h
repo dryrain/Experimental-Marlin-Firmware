@@ -12,8 +12,6 @@
   void lcd_setalertstatuspgm(const char* message);
   void lcd_reset_alert_level();
   
-  //Changes Rapduch
-  #define PAUSE_Z_CORRECTION_MM=10;
   
   static unsigned char blink = 0;	// Variable for visualisation of fan rotation in GLCD
 

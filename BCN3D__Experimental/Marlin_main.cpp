@@ -44,6 +44,7 @@
 #include <genieArduino.h>
 #include "Touch_Screen_Definitions.h"
 
+//static Genie genie;
 Genie genie;
 #define RESETLINE 23  
 void myGenieEventHandler();
@@ -477,7 +478,7 @@ void setup()
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
   servo_init();
-  //card.initsd();
+  card.initsd();
   ////lcd_init();
   
   lcd_oldcardstatus=true;
@@ -569,17 +570,23 @@ void loop()
 	   //}
    //}
    //
-  
   //lcd_update(); 
   
   int tHotend=int(degHotend(0) + 0.5);
   int tBed=int(degBed() + 0.5);
-  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x00, current_position[X_AXIS]);
-  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x01, current_position[Y_AXIS]);
-  genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
-  genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
-
-  genie.DoEvents(); // This calls the library each loop to process the queued responses from the display
+  
+ //if (!card.sdprinting){
+	 genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
+	 genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
+	 genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x03, feedmultiply);
+	 genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x00, current_position[X_AXIS]);
+	 genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x01, current_position[Y_AXIS]);
+	 genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x02, current_position[Z_AXIS]);	 
+ //}
+ 
+ //Check value of momentary 
+ 
+ genie.DoEvents(); // This calls the library each loop to process the queued responses from the display
 }
 
 
@@ -596,7 +603,7 @@ void myGenieEventHandler(void)
 		if (Event.reportObject.object == GENIE_OBJ_WINBUTTON)                // If the Reported Message was from a winbutton
 		{
 			float modified_position;
-			if (Event.reportObject.index == 0)                              // If Winbutton0
+			if (Event.reportObject.index == BUTTON_MOVE_AXIS_X)                              // If Winbutton1
 			{
 				Serial.println("Right");
 				modified_position=current_position[X_AXIS]+move_mm;
@@ -605,7 +612,7 @@ void myGenieEventHandler(void)
 				plan_buffer_line(modified_position, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);			
 				current_position[X_AXIS]=modified_position;
 			}
-			else if (Event.reportObject.index == 1)                              // If Winbutton1
+			else if (Event.reportObject.index == BUTTON_MOVE_AXIS_minusX)                              // If Winbutton0
 			{
 				Serial.println("Left");
 				modified_position=current_position[X_AXIS]-move_mm;
@@ -614,20 +621,20 @@ void myGenieEventHandler(void)
 				plan_buffer_line(modified_position, current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
 				current_position[X_AXIS]=modified_position;
 			}
-			else if (Event.reportObject.index == 2)                              // If Winbutton2
+			else if (Event.reportObject.index == BUTTON_MOVE_AXIS_Y)                              // If Winbutton2
 			{
 				Serial.println("Down");
-				modified_position=current_position[Y_AXIS]-move_mm;
+				modified_position=current_position[Y_AXIS]+move_mm;
 				if (modified_position < Y_MIN_POS)modified_position = Y_MIN_POS;
 				if (modified_position > Y_MAX_POS)modified_position = Y_MAX_POS;
 				plan_buffer_line(current_position[X_AXIS], modified_position, current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
 				current_position[Y_AXIS]=modified_position;
 			}
-			else if (Event.reportObject.index == 3)                              // If Winbutton3
+			else if (Event.reportObject.index == BUTTON_MOVE_AXIS_minusY)                              // If Winbutton3
 			{
 				if (millis() >= waitPeriod){
 					Serial.println("Up");
-					modified_position=current_position[Y_AXIS]+move_mm;
+					modified_position=current_position[Y_AXIS]-move_mm;
 					if (modified_position < Y_MIN_POS)modified_position = Y_MIN_POS;
 					if (modified_position > Y_MAX_POS)modified_position = Y_MAX_POS;
 					plan_buffer_line(current_position[X_AXIS], modified_position, current_position[Z_AXIS], current_position[E_AXIS], 600, active_extruder);
@@ -635,15 +642,14 @@ void myGenieEventHandler(void)
 					waitPeriod=millis()+50;
 				}
 			}
-			else if (Event.reportObject.index == 4)                              // If Winbutton4
+			else if (Event.reportObject.index == BUTTON_MOVE_AXIS_HOME)                              // If Winbutton4
 			{
 				if (millis() >= waitPeriod){
 					Serial.println("HOME");
 					enquecommand_P((PSTR("G28")));
 					waitPeriod=millis()+50;
 				}			
-			}
-			
+			}			
 			else if (Event.reportObject.index == 5)
 			{
 				int value = genie.GetEventData(&Event);
@@ -678,10 +684,10 @@ void myGenieEventHandler(void)
 			}
 			
 			
-			else if (Event.reportObject.index == 7)                              // If Winbutton7 Button Z
+			else if (Event.reportObject.index == BUTTON_MOVE_AXIS_Z)                              // If Winbutton7 Button Z
 			{
 				if (millis() >= waitPeriod){
-					Serial.println("Up");
+					Serial.println("ZUp");
 					modified_position=current_position[Z_AXIS]+move_mm;
 					if (modified_position < Z_MIN_POS)modified_position = Z_MIN_POS;
 					if (modified_position > Z_MAX_POS)modified_position = Z_MAX_POS;
@@ -691,18 +697,18 @@ void myGenieEventHandler(void)
 				}
 			}
 			
-			else if (Event.reportObject.index == 8)                              // If Winbutton8
+			else if (Event.reportObject.index == BUTTON_MOVE_AXIS_minusZ)                              // If Winbutton8
 			{
 				if (millis() >= waitPeriod){
-					Serial.println("Up");
-					modified_position=current_position[Y_AXIS]-move_mm;
+					Serial.println("ZDown");
+					modified_position=current_position[Z_AXIS]-move_mm;
 					if (modified_position < Z_MIN_POS)modified_position = Z_MIN_POS;
 					if (modified_position > Z_MAX_POS)modified_position = Z_MAX_POS;
 					plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], modified_position, current_position[E_AXIS], 600, active_extruder);
 					current_position[Z_AXIS]=modified_position;
 					waitPeriod=millis()+50;
 				}
-			}		
+			}
 		}
 		
 		//Userbuttons
@@ -726,42 +732,48 @@ void myGenieEventHandler(void)
 				
 			if (Event.reportObject.index == BUTTON_PAUSE )
 			{
-				int value = genie.GetEventData(&Event);
-				if (value == 1) // Need to preheat
-				{
-					//Button Pressed ON					
-					card.pauseSDPrint();				
-				}	
-				else
-				{
-					card.startFileprint();					
-				}			
+				//genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSE,1);	
+				Serial.println("Estem a PAUSE");						
 			}
 			
 			if (Event.reportObject.index == BUTTON_STOP )
 			{
 				card.sdprinting = false;
 				card.closefile();
+				
+				plan_buffer_line(current_position[X_AXIS],current_position[Y_AXIS],current_position[Z_AXIS]+10,current_position[E_AXIS], 600, active_extruder);
 				quickStop();
-				
-				//Rapduch
-				genie.WriteObject(GENIE_OBJ_FORM,5,1);
-				
+												
 				if(SD_FINISHED_STEPPERRELEASE)
 				{
 					enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
 				}
-				autotempShutdown();
+				//autotempShutdown();
+				setTargetHotend0(0);
+				setTargetHotend1(0);
+				setTargetHotend2(0);
+				setTargetBed(0);
+				
+				//Rapduch
+				genie.WriteObject(GENIE_OBJ_FORM,5,1);
 			}		
 			
 			if (Event.reportObject.index == BUTTON_SPEED_UP )
 			{
-								
+				int value=5;
+				if (feedmultiply<200)
+				{
+					feedmultiply+=value;
+				}									
 			}
 			
 			if (Event.reportObject.index == BUTTON_SPEED_DOWN )
 			{
-							
+				int value=5;
+				if (feedmultiply>50)
+				{
+					feedmultiply-=value;		
+				}
 			}
 		}
 					
@@ -781,7 +793,7 @@ void myGenieEventHandler(void)
 				}
 				enquecommand(cmd);
 				enquecommand_P(PSTR("M24"));
-				genie.WriteObject(GENIE_OBJ_FORM,9,1);
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINT,1);
 			}
 		}
 		
@@ -818,9 +830,29 @@ void myGenieEventHandler(void)
 				}
 			}		
 			
-			if (Event.reportObject.index == 3)
+			if (Event.reportObject.index == FORM_PAUSE)
 			{
-				genie.WriteStr(3,"Printing...");
+				if (genie.ReadObject(GENIE_OBJ_USERBUTTON,BUTTON_PAUSE)){
+					//genieFrame.reportObject.data_lsb	
+					//genie.GetcharSerial()				
+				}
+				//genie.
+				//int value = genie.GetEventData(&Event);
+				//if (value == 1) // Need to preheat
+				//{
+					////Button Pressed ON
+					//card.pauseSDPrint();
+				//}
+				//else
+				//{
+					//card.startFileprint();
+				//}
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINT,1);
+			}
+			
+			if (Event.reportObject.index == FORM_PRINT)
+			{
+				//Nothing here...
 			}
 		}
 	
@@ -1545,7 +1577,9 @@ void process_commands()
       if(setTargetedHotend(109)){
         break;
       }
-      LCD_MESSAGEPGM(MSG_HEATING);
+      //LCD_MESSAGEPGM(MSG_HEATING);
+	  //Rapduch
+	  genie.WriteStr(6,MSG_HEATING);
       #ifdef AUTOTEMP
         autotemp_enabled=false;
       #endif
@@ -1620,6 +1654,8 @@ void process_commands()
     case 190: // M190 - Wait for bed heater to reach target.
     #if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
         LCD_MESSAGEPGM(MSG_BED_HEATING);
+		//Rapduch
+		genie.WriteStr(6,MSG_BED_HEATING);
         if (code_seen('S')) setTargetBed(code_value());
         codenum = millis();
         while(isHeatingBed())

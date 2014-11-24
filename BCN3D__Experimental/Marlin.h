@@ -22,6 +22,9 @@
 #include "Configuration.h"
 #include "pins.h"
 
+//Rapduch
+#include <genieArduino.h>
+
 #ifndef AT90USB
 //#define  HardwareSerial_h // trick to disable the standard HWserial
 #endif
@@ -213,5 +216,9 @@ extern unsigned long stoptime;
 
 // Handling multiple extruders pins
 extern uint8_t active_extruder;
+
+//Rapduch
+extern Genie genie;
+//static Genie genie;
 
 #endif
