@@ -1059,19 +1059,19 @@ int read_max6675()
 // Timer 0 is shared with millies
 ISR(TIMER0_COMPB_vect)
 {
-	
+			
 	//Rapduch
-	seconds++;
-	//if (seconds == 1000 && card.sdprinting) //Access at 1 second
-	if (seconds == 1000)
-	{
-		seconds = 0;		
-		int tHotend=int(degHotend(0) + 0.5);
-		int tBed=int(degBed() + 0.5);
-		
-		//Serial.print("Temp Hotend: ");
-		//Serial.println(tHotend);
-		counter_seconds++;
+	//seconds++;
+	////if (seconds == 1000 && card.sdprinting) //Access at 1 second
+	//if (seconds == 1000)
+	//{
+		//genie.DoEvents();
+		//seconds = 0;		
+		//int tHotend=int(degHotend(0) + 0.5);
+		//int tBed=int(degBed() + 0.5);
+		//
+		//Serial.println("We are in interrupt");
+		//counter_seconds++;
 		
 		//if(counter_seconds % 2== 0) //Parell
 		//{
@@ -1079,15 +1079,15 @@ ISR(TIMER0_COMPB_vect)
 		//}
 		//genie.WriteObject_RepRap(GENIE_OBJ_LED,0x00,0);
 		
-		if(counter_seconds==60) {
-			counter_minutes++;
-			counter_seconds=0;
-		}
-		if(counter_minutes==60){
-			counter_hours++;
-			counter_minutes=0;
-		}
-		if(counter_hours==100) counter_hours=0;
+		//if(counter_seconds==60) {
+			//counter_minutes++;
+			//counter_seconds=0;
+		//}
+		//if(counter_minutes==60){
+			//counter_hours++;
+			//counter_minutes=0;
+		//}
+		//if(counter_hours==100) counter_hours=0;
 		//genie.DoEvents(); 
 		//genie.WriteObject_RepRap(GENIE_OBJ_THERMOMETER,0x00, tHotend);
 		//genie.DoEvents(); 
@@ -1109,7 +1109,7 @@ ISR(TIMER0_COMPB_vect)
 		//Serial2.write(0x32);
 		//Serial2.write(0x20);
 		
-	}//else{
+	//}//else{
 	
 	  
 	  

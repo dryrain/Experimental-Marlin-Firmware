@@ -14,8 +14,12 @@
 #define BUTTON_AUTOLEVEL 12
 #define BUTTON_PAUSE 18
 #define BUTTON_STOP 19
+#define BUTTON_SD_SELECTED 15
+#define BUTTON_SD_LEFT 14
+#define BUTTON_SD_RIGHT 5
 #define BUTTON_SPEED_UP 20
 #define BUTTON_SPEED_DOWN 21
+#define BUTTON_START_PRINTING 24
 
 //Winbuttons
 #define BUTTON_MOVE_AXIS_X 1
@@ -27,6 +31,7 @@
 #define BUTTON_MOVE_AXIS_HOME 4
 #define BUTTON_PREHEAT 5
 
+
 #define MENU_PRINT 12
 #define MENU_PREHEAT 12
 #define MENU_UTILITY 12
@@ -37,7 +42,11 @@
 
 //Form
 #define FORM_PAUSE 3
+#define FORM_STOP 12
 #define FORM_PRINT 9
+#define FORM_START_PRINT 10
+#define FORM_PAUSED_PRINT 11
+
 
 
 

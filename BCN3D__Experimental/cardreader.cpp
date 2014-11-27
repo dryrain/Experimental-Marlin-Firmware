@@ -555,7 +555,7 @@ void CardReader::printingHasFinished()
     sdprinting = false;
 	
 	//Rapduch
-	genie.WriteObject(GENIE_OBJ_FORM,0,1);
+	genie.WriteObject(GENIE_OBJ_FORM,5,1);
 	
     if(SD_FINISHED_STEPPERRELEASE)
     {
