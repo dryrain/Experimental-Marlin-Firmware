@@ -57,7 +57,10 @@
 #include "temperature.h"
 #include "ultralcd.h"
 #include "language.h"
+
+//Rapduch
 #include "Hysteresis.h"
+#include <genieArduino.h>
 
 //===========================================================================
 //=============================public variables ============================
@@ -535,7 +538,7 @@ float junction_deviation = 0.1;
 // calculation the caller must also provide the physical length of the line in millimeters.
 void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder)
 {
-	//Dryrain changes-----------------------
+	//Rapduch changes-----------------------
 	#ifdef HYSTERESIS_H
 	//Hysteresis correction if needed
 	hysteresis.InsertCorrection(x,y,z,e);
@@ -551,7 +554,9 @@ void plan_buffer_line(const float &x, const float &y, const float &z, const floa
   {
     manage_heater(); 
     manage_inactivity(); 
-    lcd_update();
+    //lcd_update();
+	//Rapduch trying to make LCD responsive
+	genie.DoEvents();
   }
 
   // The target position of the tool in absolute steps

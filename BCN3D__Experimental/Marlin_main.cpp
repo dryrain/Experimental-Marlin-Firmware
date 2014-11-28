@@ -635,7 +635,7 @@ void loop()
 //}//else everything
 ////Here put all the genie.write or doevents
 
-
+//Created by Jordi Calduch for RepRapBCN SIGMA 10/2014
 void myGenieEventHandler(void)
 {
 	genieFrame Event;
@@ -751,7 +751,7 @@ void myGenieEventHandler(void)
 				
 					
 				genie.WriteStr(7,card.longFilename);//StartPrint form
-				genie.WriteStr(2,card.longFilename);//Printing form
+				//genie.WriteStr(2,card.longFilename);//Printing form
 				//genie.WriteStr(10,card.longFilename);//PausedPrint form
 			}		
 			
@@ -808,32 +808,34 @@ void myGenieEventHandler(void)
 				Serial.println(filepointer);		
 			}
 				
-			else if (Event.reportObject.index == BUTTON_PAUSE )
+			else if (Event.reportObject.index == BUTTON_RESUME )
 			{
 				//genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSE,1);	
-				Serial.println("Estem a PAUSE");						
+				Serial.println("RESUME!");	
+				card.startFileprint();
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINT,0);								
 			}
 			
 			else if (Event.reportObject.index == BUTTON_STOP )
 			{
-				//card.sdprinting = false;
-				//card.closefile();
-				//
+				card.sdprinting = false;
+				card.closefile();
+				
 				//plan_buffer_line(current_position[X_AXIS],current_position[Y_AXIS],current_position[Z_AXIS]+10,current_position[E_AXIS], 600, active_extruder);
-				//quickStop();
-												//
-				//if(SD_FINISHED_STEPPERRELEASE)
-				//{
-					//enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
-				//}
-				////autotempShutdown();
+				quickStop();
+												
+				if(SD_FINISHED_STEPPERRELEASE)
+				{
+					enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
+				}
+				autotempShutdown();
 				//setTargetHotend0(0);
 				//setTargetHotend1(0);
 				//setTargetHotend2(0);
 				//setTargetBed(0);
-				//
-				////Rapduch
-				//genie.WriteObject(GENIE_OBJ_FORM,5,1);
+				
+				//Rapduch
+				genie.WriteObject(GENIE_OBJ_FORM,5,1);
 			}		
 			
 			else if (Event.reportObject.index == BUTTON_SPEED_UP )
@@ -907,13 +909,13 @@ void myGenieEventHandler(void)
 					//card.startFileprint();
 				//}
 				genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSED_PRINT,1);
-				
+				genie.WriteStr(10,card.longFilename);//PausedPrint form
 				//Many ways to achieve this, we could check ReadObject to know if resume is UP or NOT
 			}
 			
 			else if (Event.reportObject.index == FORM_STOP)
 			{
-				plan_buffer_line(current_position[X_AXIS],current_position[Y_AXIS],current_position[Z_AXIS]+10,current_position[E_AXIS], 600, active_extruder);
+				//plan_buffer_line(current_position[X_AXIS],current_position[Y_AXIS],current_position[Z_AXIS]+10,current_position[E_AXIS], 600, active_extruder);
 				card.sdprinting = false;
 				card.closefile();
 				
@@ -923,11 +925,11 @@ void myGenieEventHandler(void)
 				{
 					enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
 				}
-				//autotempShutdown();
-				setTargetHotend0(0);
-				setTargetHotend1(0);
-				setTargetHotend2(0);
-				setTargetBed(0);
+				autotempShutdown();
+				//setTargetHotend0(0);
+				//setTargetHotend1(0);
+				//setTargetHotend2(0);
+				//setTargetBed(0);
 				
 				//Rapduch
 				genie.WriteObject(GENIE_OBJ_FORM,5,1);
@@ -1755,9 +1757,9 @@ void process_commands()
 		    }			
 			genie.DoEvents(); // This calls the library each loop to process the queued responses from the display  
 		
-			if (card.sdprinting==false)
+			if (card.sdprinting==false && !card.sdispaused) //Added ispaused from cardreader
 			{
-				break; //Break if we are trying to heat when the fileprinting has been stopped	
+				break; //Break if we are trying to heat when the fileprinting has been stopped and is not paused
 			}
 		    
 		  
@@ -1851,9 +1853,9 @@ void process_commands()
 		   }
 		   genie.DoEvents(); // This calls the library each loop to process the queued responses from the display	
 		   
-		   if (card.sdprinting==false)
+		   if (card.sdprinting==false && !card.sdispaused)
 		   {
-			   break; //Break if we are trying to heat when the fileprinting has been stopped
+			   break; //Break if we are trying to heat when the fileprinting has been stopped and is not paused
 		   }
 		   			   	  
           //lcd_update();
