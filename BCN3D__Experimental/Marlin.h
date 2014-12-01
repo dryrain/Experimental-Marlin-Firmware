@@ -219,6 +219,7 @@ extern uint8_t active_extruder;
 
 //Rapduch
 extern Genie genie;
+void touchscreen_update();
 //static Genie genie;
 
 #endif

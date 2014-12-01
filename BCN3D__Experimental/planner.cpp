@@ -556,7 +556,7 @@ void plan_buffer_line(const float &x, const float &y, const float &z, const floa
     manage_inactivity(); 
     //lcd_update();
 	//Rapduch trying to make LCD responsive
-	genie.DoEvents();
+	touchscreen_update();
   }
 
   // The target position of the tool in absolute steps

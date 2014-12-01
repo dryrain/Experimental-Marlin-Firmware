@@ -476,7 +476,7 @@ void setup()
 //
   tp_init();    // Initialize temperature loop
   plan_init();  // Initialize planner;
-  //watchdog_init();
+  watchdog_init();  // Does Nothing if its not enabled
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
   servo_init();
@@ -583,6 +583,8 @@ void loop()
   static long waitPeriod = millis();
   if (millis() >= waitPeriod)
   {
+	  touchscreen_update();
+	  
  //if (!card.sdprinting){
 	//genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
 	//genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
@@ -592,9 +594,9 @@ void loop()
 	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x02, current_position[Z_AXIS]);	
 	
 	//Form Start -- if itsnotstarted
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x08, tHotend);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x09, 0);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x08, tHotend);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x09, 0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
 	//Form Printing
 	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x03, tHotend);
 	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x07, 0);
@@ -604,24 +606,24 @@ void loop()
 	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x14, 0);
 	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x15, tBed);
 	  
-	if(starttime != 0)
-	{
-	uint16_t time = millis()/60000 - starttime/60000;
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x05,(time%60));
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x04,(time/60));
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x12,(time%60));
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x11,(time/60));
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,(time%60));
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,(time/60));
-	} else {
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x05,0);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x04,0);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x12,0);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x11,0);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,0);
-	genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,0);
-	
-	}	 
+	//if(starttime != 0)
+	//{
+	//uint16_t time = millis()/60000 - starttime/60000;
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x05,(time%60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x04,(time/60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x12,(time%60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x11,(time/60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,(time%60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,(time/60));
+	//} else {
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x05,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x04,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x12,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x11,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,0);
+	//
+	//}	 
  waitPeriod=millis()+500;
  }
  //} 
@@ -743,14 +745,10 @@ void myGenieEventHandler(void)
 		if (Event.reportObject.object == GENIE_OBJ_USERBUTTON) //Userbuttons to select GCODE from SD
 		{
 			if (Event.reportObject.index == BUTTON_SD_SELECTED )
-			{
-				
-				genie.WriteObject(GENIE_OBJ_FORM,10,1);	
-				
-				//Write the selected SD file to all strings
-				
-					
-				genie.WriteStr(7,card.longFilename);//StartPrint form
+			{				
+				genie.WriteObject(GENIE_OBJ_FORM,10,0);					
+				//Write the selected SD file to all strings				
+				//genie.WriteStr(7,card.longFilename);//StartPrint form
 				//genie.WriteStr(2,card.longFilename);//Printing form
 				//genie.WriteStr(10,card.longFilename);//PausedPrint form
 			}		
@@ -758,7 +756,7 @@ void myGenieEventHandler(void)
 			else if (Event.reportObject.index == BUTTON_START_PRINTING )
 			{
 				genie.WriteObject(GENIE_OBJ_FORM,9,0); //Printing FORM
-				genie.WriteStr(2,card.longFilename);//Printing form
+				//genie.WriteStr(2,card.longFilename);//Printing form
 				char cmd[30];
 				char* c;
 				card.getfilename(filepointer);
@@ -813,7 +811,7 @@ void myGenieEventHandler(void)
 				//genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSE,1);	
 				Serial.println("RESUME!");	
 				card.startFileprint();
-				genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINT,0);								
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINTING,0);								
 			}
 			
 			else if (Event.reportObject.index == BUTTON_STOP )
@@ -844,7 +842,7 @@ void myGenieEventHandler(void)
 				if (feedmultiply<200)
 				{
 					feedmultiply+=value;
-					genie.WriteObject(GENIE_OBJ_LED_DIGITS,3,feedmultiply);
+					genie.WriteObject(GENIE_OBJ_LED_DIGITS,LEDDIGITS_FEEDRATE,feedmultiply);
 				}									
 			}
 			
@@ -854,10 +852,24 @@ void myGenieEventHandler(void)
 				if (feedmultiply>50)
 				{
 					feedmultiply-=value;
-					genie.WriteObject(GENIE_OBJ_LED_DIGITS,3,feedmultiply);		
+					genie.WriteObject(GENIE_OBJ_LED_DIGITS,LEDDIGITS_FEEDRATE,feedmultiply);		
 				}
 			}
-		}					
+			
+			else if (Event.reportObject.index == BUTTON_SETUP_BACK )
+			{
+				if (card.sdispaused)
+				{
+					genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSED_PRINT,0);
+				}else if (card.sdprinting)
+				{
+					genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINTING,0);		
+				}else
+				{
+					genie.WriteObject(GENIE_OBJ_FORM,FORM_START_PRINT,0);
+				}
+			}
+		}							
 		//USERBUTTONS------------------------------------------------------
 		
 		//ANIBUTONS--------------------------------------------------------		
@@ -866,7 +878,7 @@ void myGenieEventHandler(void)
 		//FORMS--------------------------------------------------------	
 		if (Event.reportObject.object == GENIE_OBJ_FORM)
 		{
-			if (Event.reportObject.index == 2)
+			if (Event.reportObject.index == FORM_SDFILES)
 			{	
 				Serial.println("Form 2!");				
 				////Check sdcardFiles
@@ -926,13 +938,28 @@ void myGenieEventHandler(void)
 					enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
 				}
 				autotempShutdown();
-				//setTargetHotend0(0);
-				//setTargetHotend1(0);
-				//setTargetHotend2(0);
-				//setTargetBed(0);
+				setTargetHotend(0,active_extruder);
+				setTargetBed(0);
 				
 				//Rapduch
-				genie.WriteObject(GENIE_OBJ_FORM,5,1);
+				genie.WriteObject(GENIE_OBJ_FORM,5,0);
+			}
+			
+			else if (Event.reportObject.index == FORM_FEEDRATE)
+			{
+				genie.WriteObject(GENIE_OBJ_LED_DIGITS, LEDDIGITS_FEEDRATE, 100);
+			}	
+			
+			else if (Event.reportObject.index == FORM_START_PRINT)
+			{
+				genie.WriteStr(7,card.longFilename);
+				genie.WriteStr(8,"Ready...");
+			}
+			
+			else if (Event.reportObject.index == FORM_PRINTING)
+			{
+				genie.WriteStr(2,card.longFilename);
+				genie.WriteStr(6,"Printing...");
 			}
 		}
 	
@@ -975,6 +1002,38 @@ bool timepassed(long waiting_time)
 		return false;
 	}
 }
+
+
+#ifdef TOUCH_SCREEN_DEFINITIONS_H_ //Should be a different library with all touchscreen options
+void touchscreen_update()
+{
+	uint16_t time = millis()/60000 - starttime/60000;
+	int tHotend=int(degHotend(tmp_extruder));
+	int tBed=int(degBed() + 0.5);
+	
+	if(card.sdprinting)
+	{
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,3, tHotend);
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,7, 0);
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,6, tBed);
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,5,(time%60));
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,4,(time/60));
+		genie.WriteObject(GENIE_OBJ_STRINGS,6,0);
+		genie.WriteObject(GENIE_OBJ_STRINGS,2,0);
+	}else
+	{
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,8, tHotend);
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,9, 0);
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,(time%60));
+		genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,(time/60));	
+		genie.WriteObject(GENIE_OBJ_STRINGS,7,0);
+		genie.WriteObject(GENIE_OBJ_STRINGS,8,0);
+	}
+	
+	genie.DoEvents();
+}
+#endif
 
 
 void get_command()
@@ -1270,7 +1329,8 @@ void process_commands()
       while(millis()  < codenum ){
         manage_heater();
         manage_inactivity();
-        lcd_update();
+        //lcd_update();
+		touchscreen_update();
       }
       break;
       #ifdef FWRETRACT
@@ -2455,18 +2515,17 @@ void process_commands()
           manage_inactivity();
           lcd_update();
           if(cnt==0)
-          {
-			  //Rapduch Changes
-          //#if BEEPER > 0
-            //SET_OUTPUT(BEEPER);
-//
-            //WRITE(BEEPER,HIGH);
-            //delay(3);
-            //WRITE(BEEPER,LOW);
-            //delay(3);
-          //#else 
-            //lcd_buzz(1000/6,100);
-          //#endif
+          {		
+          #if BEEPER > 0
+            SET_OUTPUT(BEEPER);
+
+            WRITE(BEEPER,HIGH);
+            delay(3);
+            WRITE(BEEPER,LOW);
+            delay(3);
+          #else 
+            lcd_buzz(1000/6,100);
+          #endif
           }
         }
 
