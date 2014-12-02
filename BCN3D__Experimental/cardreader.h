@@ -74,8 +74,8 @@ private:
   void lsDive(const char *prepend,SdFile parent);
 };
 //Rapduch
-extern CardReader card;
-#define IS_SD_PRINTING (card.sdprinting)
+//extern CardReader card;
+//#define IS_SD_PRINTING (card.sdprinting)
 
 #if (SDCARDDETECT > -1)
 # ifdef SDCARDDETECTINVERTED 

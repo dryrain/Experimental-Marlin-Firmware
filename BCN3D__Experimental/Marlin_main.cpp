@@ -169,6 +169,7 @@ void myGenieEventHandler();
 CardReader card;
 //Rapduch
 uint16_t filepointer = 0;
+static String screen_status = "Printing...";
 #endif
 float homing_feedrate[] = HOMING_FEEDRATE;
 bool axis_relative_modes[] = AXIS_RELATIVE_MODES;
@@ -576,56 +577,52 @@ void loop()
   
   
   //This would be genie_update()
-  int tHotend=int(degHotend(0) + 0.5);
-  int tHotend2=int(degHotend(1)+0.5);
-  int tBed=int(degBed() + 0.5);
+  //int tHotend=int(degHotend(0) + 0.5);
+  //int tHotend2=int(degHotend(1)+0.5);
+  //int tBed=int(degBed() + 0.5);
   
-  static long waitPeriod = millis();
-  if (millis() >= waitPeriod)
-  {
+  
 	  touchscreen_update();
 	  
  //if (!card.sdprinting){
-	//genie.WriteObject(GENIE_OBJ_THERMOMETER,0x00, tHotend);
-	//genie.WriteObject(GENIE_OBJ_THERMOMETER,0x01, tBed);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x03, feedmultiply);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x00, current_position[X_AXIS]);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x01, current_position[Y_AXIS]);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x02, current_position[Z_AXIS]);	
+	//genie.WriteObject(GENIE_OBJ_THERMOMETER,0, tHotend);
+	//genie.WriteObject(GENIE_OBJ_THERMOMETER,1, tBed);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, feedmultiply);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0, current_position[X_AXIS]);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 1, current_position[Y_AXIS]);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2, current_position[Z_AXIS]);	
 	
 	//Form Start -- if itsnotstarted
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x08, tHotend);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x09, 0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,8, tHotend);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,9, 0);
 	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
 	//Form Printing
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x03, tHotend);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x07, 0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x06, tBed);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,3, tHotend);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,7, 0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,6, tBed);
 	////Form Paused
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x13, tHotend);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x14, 0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x15, tBed);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,13, tHotend);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,14, 0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,15, tBed);
 	  
 	//if(starttime != 0)
 	//{
 	//uint16_t time = millis()/60000 - starttime/60000;
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x05,(time%60));
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x04,(time/60));
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x12,(time%60));
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x11,(time/60));
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,(time%60));
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,(time/60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,05,(time%60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,04,(time/60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,(time%60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,(time/60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,17,(time%60));
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,16,(time/60));
 	//} else {
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x05,0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x04,0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x12,0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x11,0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,0);
-	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,5,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,4,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,17,0);
+	//genie.WriteObject(GENIE_OBJ_LED_DIGITS,16,0);
 	//
 	//}	 
- waitPeriod=millis()+500;
- }
  //} 
  genie.DoEvents(); // This calls the library each loop to process the queued responses from the display
 }
@@ -746,9 +743,15 @@ void myGenieEventHandler(void)
 		{
 			if (Event.reportObject.index == BUTTON_SD_SELECTED )
 			{				
-				genie.WriteObject(GENIE_OBJ_FORM,10,0);					
-				//Write the selected SD file to all strings				
-				//genie.WriteStr(7,card.longFilename);//StartPrint form
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_START_PRINT,0);
+				screen_status="Ready...";//Write the selected SD file to all strings	
+				genie.WriteStr(8,"Ready...");
+				genie.WriteStr(7,card.longFilename);
+				//Reset Time LEDs
+				genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,0);
+				genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,0);				
+							
+				//StartPrint form
 				//genie.WriteStr(2,card.longFilename);//Printing form
 				//genie.WriteStr(10,card.longFilename);//PausedPrint form
 			}		
@@ -756,7 +759,7 @@ void myGenieEventHandler(void)
 			else if (Event.reportObject.index == BUTTON_START_PRINTING )
 			{
 				genie.WriteObject(GENIE_OBJ_FORM,9,0); //Printing FORM
-				//genie.WriteStr(2,card.longFilename);//Printing form
+				genie.WriteStr(2,card.longFilename);//Printing form
 				char cmd[30];
 				char* c;
 				card.getfilename(filepointer);
@@ -833,7 +836,7 @@ void myGenieEventHandler(void)
 				//setTargetBed(0);
 				
 				//Rapduch
-				genie.WriteObject(GENIE_OBJ_FORM,5,1);
+				genie.WriteObject(GENIE_OBJ_FORM,5,0);
 			}		
 			
 			else if (Event.reportObject.index == BUTTON_SPEED_UP )
@@ -858,17 +861,50 @@ void myGenieEventHandler(void)
 			
 			else if (Event.reportObject.index == BUTTON_SETUP_BACK )
 			{
-				if (card.sdispaused)
+				//if (card.sdispaused)
+				//{
+					//genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSED_PRINT,0);
+					//
+				//}else if 
+				
+				//Get status string
+				char buffer[15];
+				screen_status.toCharArray(buffer,15,0);
+				
+				if (card.sdprinting || card.sdispaused)
 				{
-					genie.WriteObject(GENIE_OBJ_FORM,FORM_PAUSED_PRINT,0);
-				}else if (card.sdprinting)
-				{
-					genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINTING,0);		
+					genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINTING,0);
+					//Restore Strings after form update
+					genie.WriteStr(2,card.longFilename);
+					genie.WriteStr(6,buffer);		
 				}else
 				{
 					genie.WriteObject(GENIE_OBJ_FORM,FORM_START_PRINT,0);
+					//Restore Strings
+					genie.WriteStr(7,card.longFilename);
+					genie.WriteStr(8,buffer);
 				}
 			}
+			
+			else if (Event.reportObject.index == BUTTON_PAUSE_RESUME )
+			{
+				int value = genie.GetEventData(&Event);
+				if (value == 1) // Need to preheat
+				{
+					card.pauseSDPrint();
+					genie.WriteStr(6,"Pausing...");	
+					Serial.println("PAUSE!");
+				}else{
+					if(card.sdispaused)
+					{
+						card.startFileprint();
+						genie.WriteStr(6,"Printing...");
+						Serial.println("RESUME!");
+					}else{
+						Serial.println("We have stopped");
+					}
+				}
+			}		
 		}							
 		//USERBUTTONS------------------------------------------------------
 		
@@ -941,8 +977,12 @@ void myGenieEventHandler(void)
 				setTargetHotend(0,active_extruder);
 				setTargetBed(0);
 				
+				//If we are paused, unpause.
+				card.sdispaused=false;
+				
 				//Rapduch
-				genie.WriteObject(GENIE_OBJ_FORM,5,0);
+				genie.WriteObject(GENIE_OBJ_USERBUTTON,BUTTON_PAUSE_RESUME,0);//Set pause Button to default position
+				genie.WriteObject(GENIE_OBJ_FORM,5,0);//Exit to main menu
 			}
 			
 			else if (Event.reportObject.index == FORM_FEEDRATE)
@@ -952,14 +992,15 @@ void myGenieEventHandler(void)
 			
 			else if (Event.reportObject.index == FORM_START_PRINT)
 			{
-				genie.WriteStr(7,card.longFilename);
-				genie.WriteStr(8,"Ready...");
+				//Not sure if useful to update strings here!!!
+				//genie.WriteStr(7,card.longFilename);
+				//genie.WriteStr(8,"Ready...");
 			}
 			
 			else if (Event.reportObject.index == FORM_PRINTING)
 			{
-				genie.WriteStr(2,card.longFilename);
-				genie.WriteStr(6,"Printing...");
+				//genie.WriteStr(2,card.longFilename);
+				//genie.WriteStr(6,"Printing...");
 			}
 		}
 	
@@ -1003,34 +1044,38 @@ bool timepassed(long waiting_time)
 	}
 }
 
-
+//By Jordi Calduch
 #ifdef TOUCH_SCREEN_DEFINITIONS_H_ //Should be a different library with all touchscreen options
 void touchscreen_update()
 {
 	uint16_t time = millis()/60000 - starttime/60000;
 	int tHotend=int(degHotend(tmp_extruder));
 	int tBed=int(degBed() + 0.5);
-	
-	if(card.sdprinting)
-	{
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,3, tHotend);
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,7, 0);
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,6, tBed);
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,5,(time%60));
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,4,(time/60));
-		genie.WriteObject(GENIE_OBJ_STRINGS,6,0);
-		genie.WriteObject(GENIE_OBJ_STRINGS,2,0);
-	}else
-	{
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,8, tHotend);
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,9, 0);
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,(time%60));
-		genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,(time/60));	
-		genie.WriteObject(GENIE_OBJ_STRINGS,7,0);
-		genie.WriteObject(GENIE_OBJ_STRINGS,8,0);
-	}
-	
+	//static keyword specifies that the variable retains its state between calls to the function
+	//static long waitPeriod = millis();
+	//if (millis() >= waitPeriod)
+	//{
+		if(card.sdprinting)
+		{
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,3, tHotend);
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,7, 0);
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,6, tBed);
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,5,(time%60));
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,4,(time/60));
+			//genie.WriteObject(GENIE_OBJ_STRINGS,6,0);
+			//genie.WriteObject(GENIE_OBJ_STRINGS,2,0);
+		}else
+		{
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,8, tHotend);
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,9, 0);
+			genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
+			//genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,0);
+			//genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,0);	
+			//genie.WriteObject(GENIE_OBJ_STRINGS,7,0);
+			//genie.WriteObject(GENIE_OBJ_STRINGS,8,0);
+		}
+	//}
+	//waitPeriod=250+millis();	
 	genie.DoEvents();
 }
 #endif
@@ -1145,6 +1190,15 @@ void get_command()
   }
   #ifdef SDSUPPORT
   if(!card.sdprinting || serial_count!=0){
+	  //Rapduch
+	  static long waitperiod=millis();
+	  if (millis()>=waitperiod)
+	  {
+		  screen_status="Paused...";
+		  genie.WriteStr(6,"Paused..."); //Print Paused on screen Status
+	  }
+	  waitperiod=millis()+500;
+	  
     return;
   }
   while( !card.eof()  && buflen < BUFSIZE) {
@@ -1720,6 +1774,7 @@ void process_commands()
       //LCD_MESSAGEPGM(MSG_HEATING);
 	  //Rapduch
 	  genie.WriteStr(6,MSG_HEATING);
+	  screen_status=MSG_HEATING;
       #ifdef AUTOTEMP
         autotemp_enabled=false;
       #endif
@@ -1813,7 +1868,7 @@ void process_commands()
 				    //genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,0);
 				    //genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,0);
 			    }
-			    waitPeriod=millis()+1000;
+			    waitPeriod=millis()+500;
 		    }			
 			genie.DoEvents(); // This calls the library each loop to process the queued responses from the display  
 		
@@ -1845,6 +1900,7 @@ void process_commands()
         LCD_MESSAGEPGM(MSG_BED_HEATING);
 		//Rapduch
 		genie.WriteStr(6,MSG_BED_HEATING);
+		screen_status=MSG_BED_HEATING;
         if (code_seen('S')) setTargetBed(code_value());
         codenum = millis();
         while(isHeatingBed())
@@ -1909,7 +1965,7 @@ void process_commands()
 				   //genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x17,0);
 				   //genie.WriteObject(GENIE_OBJ_LED_DIGITS,0x16,0);
 			   }
-			   waitPeriod=millis()+50;
+			   waitPeriod=millis()+500;
 		   }
 		   genie.DoEvents(); // This calls the library each loop to process the queued responses from the display	
 		   

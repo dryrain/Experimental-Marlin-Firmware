@@ -47,10 +47,10 @@ float current_temperature_bed = 0.0;
 
 
 //Rapduch
-int seconds=0;
-int counter_seconds=0;
-int counter_minutes=0;
-int counter_hours=0;
+//int seconds=0;
+//int counter_seconds=0;
+//int counter_minutes=0;
+//int counter_hours=0;
 
 
 #ifdef TEMP_SENSOR_1_AS_REDUNDANT

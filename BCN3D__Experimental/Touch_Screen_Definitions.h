@@ -22,6 +22,7 @@
 #define BUTTON_SPEED_DOWN 33
 #define BUTTON_START_PRINTING 24
 #define BUTTON_SETUP_BACK 26
+#define BUTTON_PAUSE_RESUME 18
 
 
 //Winbuttons
@@ -44,6 +45,10 @@
 
 //LedDigits
 #define LEDDIGITS_FEEDRATE 18
+
+
+//Strings
+
 
 
 //Form
