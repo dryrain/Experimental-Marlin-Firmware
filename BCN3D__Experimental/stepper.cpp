@@ -348,20 +348,56 @@ ISR(TIMER1_COMPA_vect)
 
     // Set the direction bits (X_AXIS=A_AXIS and Y_AXIS=B_AXIS for COREXY)
     if((out_bits & (1<<X_AXIS))!=0){
-      WRITE(X_DIR_PIN, INVERT_X_DIR);
-      count_direction[X_AXIS]=-1;
+	    #ifdef DUAL_X_CARRIAGE
+	    if (extruder_duplication_enabled){
+		    WRITE(X_DIR_PIN, INVERT_X_DIR);
+		    WRITE(X2_DIR_PIN, INVERT_X_DIR);
+	    }
+	    else{
+		    if (current_block->active_extruder != 0)
+		    WRITE(X2_DIR_PIN, INVERT_X_DIR);
+		    else
+		    WRITE(X_DIR_PIN, INVERT_X_DIR);
+	    }
+	    #else
+	    WRITE(X_DIR_PIN, INVERT_X_DIR);
+	    #endif
+	    count_direction[X_AXIS]=-1;
     }
     else{
-      WRITE(X_DIR_PIN, !INVERT_X_DIR);
-      count_direction[X_AXIS]=1;
+	    #ifdef DUAL_X_CARRIAGE
+	    if (extruder_duplication_enabled){
+		    WRITE(X_DIR_PIN, !INVERT_X_DIR);
+		    WRITE(X2_DIR_PIN, !INVERT_X_DIR);
+	    }
+	    else{
+		    if (current_block->active_extruder != 0)
+		    WRITE(X2_DIR_PIN, !INVERT_X_DIR);
+		    else
+		    WRITE(X_DIR_PIN, !INVERT_X_DIR);
+	    }
+	    #else
+	    WRITE(X_DIR_PIN, !INVERT_X_DIR);
+	    #endif
+	    count_direction[X_AXIS]=1;
     }
     if((out_bits & (1<<Y_AXIS))!=0){
-      WRITE(Y_DIR_PIN, INVERT_Y_DIR);
-      count_direction[Y_AXIS]=-1;
+	    WRITE(Y_DIR_PIN, INVERT_Y_DIR);
+	    
+	    #ifdef Y_DUAL_STEPPER_DRIVERS
+	    WRITE(Y2_DIR_PIN, !(INVERT_Y_DIR == INVERT_Y2_VS_Y_DIR));
+	    #endif
+	    
+	    count_direction[Y_AXIS]=-1;
     }
     else{
-      WRITE(Y_DIR_PIN, !INVERT_Y_DIR);
-      count_direction[Y_AXIS]=1;
+	    WRITE(Y_DIR_PIN, !INVERT_Y_DIR);
+	    
+	    #ifdef Y_DUAL_STEPPER_DRIVERS
+	    WRITE(Y2_DIR_PIN, (INVERT_Y_DIR == INVERT_Y2_VS_Y_DIR));
+	    #endif
+	    
+	    count_direction[Y_AXIS]=1;
     }
     
     // Set direction en check limit switches
@@ -372,15 +408,22 @@ ISR(TIMER1_COMPA_vect)
     #endif
       CHECK_ENDSTOPS
       {
-        #if defined(X_MIN_PIN) && X_MIN_PIN > -1
-          bool x_min_endstop=(READ(X_MIN_PIN) != X_ENDSTOPS_INVERTING);
-          if(x_min_endstop && old_x_min_endstop && (current_block->steps_x > 0)) {
-            endstops_trigsteps[X_AXIS] = count_position[X_AXIS];
-            endstop_x_hit=true;
-            step_events_completed = current_block->step_event_count;
-          }
-          old_x_min_endstop = x_min_endstop;
+        #ifdef DUAL_X_CARRIAGE
+        // with 2 x-carriages, endstops are only checked in the homing direction for the active extruder
+        if ((current_block->active_extruder == 0 && X_HOME_DIR == -1)
+        || (current_block->active_extruder != 0 && X2_HOME_DIR == -1))
         #endif
+        {
+	        #if defined(X_MIN_PIN) && X_MIN_PIN > -1
+	        bool x_min_endstop=(READ(X_MIN_PIN) != true);
+	        if(x_min_endstop && old_x_min_endstop && (current_block->steps_x > 0)) {
+		        endstops_trigsteps[X_AXIS] = count_position[X_AXIS];
+		        endstop_x_hit=true;
+		        step_events_completed = current_block->step_event_count;
+	        }
+	        old_x_min_endstop = x_min_endstop;
+	        #endif
+		}
       }
     }
     else { // +direction
