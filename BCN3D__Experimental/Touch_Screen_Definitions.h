@@ -30,7 +30,8 @@
 #define BUTTON_BED_UP			48
 #define BUTTON_NOZZLE_DOWN		42
 #define BUTTON_NOZZLE_UP		41
-
+#define BUTTON_SETUP_BACK_NOZZLE1 43
+#define BUTTON_SETUP_BACK_BED	44
 
 //Winbuttons
 #define BUTTON_MOVE_AXIS_X		1
@@ -57,7 +58,9 @@
 
 
 //Strings
-
+#define STRINGS_NOZZLE1			25
+#define STRINGS_NOZZLE2			26
+#define STRINGS_BED				27
 
 
 //Form
@@ -71,10 +74,10 @@
 #define FORM_NOZZLE				16
 #define FORM_BED				17
 #define FORM_FAN				18
-
-
-
-
+#define FORM_TEMPERATURE		22
+#define FORM_MAIN_SCREEN		5
+#define FORM_SETUP				13
+#define FORM_UTILITIES			4
 
 
 #endif /* INCFILE1_H_ */

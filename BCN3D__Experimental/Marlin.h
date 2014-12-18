@@ -220,6 +220,8 @@ extern uint8_t active_extruder;
 //Rapduch
 extern Genie genie;
 void touchscreen_update();
+char* prepare_temp_string(int element);
 //static Genie genie;
+extern bool surfing_utilities;
 
 #endif

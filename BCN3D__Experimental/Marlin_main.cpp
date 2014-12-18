@@ -171,6 +171,11 @@ CardReader card;
 uint16_t filepointer = 0;
 static String screen_status = "Printing...";
 #endif
+
+//Rapduch
+bool surfing_utilities = false;
+
+
 float homing_feedrate[] = HOMING_FEEDRATE;
 bool axis_relative_modes[] = AXIS_RELATIVE_MODES;
 int feedmultiply=100; //100->1 200->2
@@ -924,6 +929,18 @@ void myGenieEventHandler(void)
 				}
 			}
 			
+			else if (Event.reportObject.index == BUTTON_SETUP_BACK_NOZZLE1 || Event.reportObject.index == BUTTON_SETUP_BACK_BED )
+			{				
+				if (surfing_utilities) // Check if we are backing from utilities or print setup
+				{
+					genie.WriteObject(GENIE_OBJ_FORM,FORM_TEMPERATURE,0);
+				}else
+				{
+					genie.WriteObject(GENIE_OBJ_FORM,FORM_SETUP,0);
+				}
+			}
+			
+			
 			else if (Event.reportObject.index == BUTTON_PAUSE_RESUME )
 			{
 				int value = genie.GetEventData(&Event);
@@ -1076,6 +1093,18 @@ void myGenieEventHandler(void)
 			{
 				genie.WriteObject(GENIE_OBJ_LED_DIGITS,LEDDIGITS_FAN,fanSpeed);
 			}
+			
+			else if (Event.reportObject.index == FORM_MAIN_SCREEN)
+			{
+				surfing_utilities=false;
+				Serial.println("Surfing 0");
+			}
+			
+			else if (Event.reportObject.index == FORM_UTILITIES)
+			{
+				surfing_utilities=true;
+				Serial.println("Surfing 1");
+			}
 		}
 	
 
@@ -1118,15 +1147,33 @@ bool timepassed(long waiting_time)
 	}
 }
 
+//Rapduch
+char* prepare_temp_string(int element)
+{
+	//hotend 1
+	char cmd[8]=""; //Temperature line
+	if (element==0 || element==1){	
+		int tHotend=int(degHotend(element) + 0.5);
+		int tTarget=int(degTargetHotend(element) + 0.5);
+		sprintf(cmd,"%d/%d",tHotend,tTarget);
+	}else if (element==2){
+		int tBed=int(degBed() + 0.5);
+		int tTargetBed=int(degTargetBed() + 0.5);
+		sprintf(cmd,"%d/%d",tBed,tTargetBed);
+	}
+	return cmd;
+}
+
 //By Jordi Calduch
 #ifdef TOUCH_SCREEN_DEFINITIONS_H_ //Should be a different library with all touchscreen options
 void touchscreen_update()
 {
-	uint16_t time = millis()/60000 - starttime/60000;
+	uint32_t time = millis()/60000 - starttime/60000;
+	uint32_t time2 = millis()-starttime;
 	int tHotend=int(degHotend(tmp_extruder));
 	int tBed=int(degBed() + 0.5);
 	//static keyword specifies that the variable retains its state between calls to the function
-	//static long waitPeriod = millis();
+	static uint32_t waitPeriod = millis();
 	//if (millis() >= waitPeriod)
 	//{
 		if(card.sdprinting)
@@ -1138,18 +1185,57 @@ void touchscreen_update()
 			genie.WriteObject(GENIE_OBJ_LED_DIGITS,4,(time/60));
 			//genie.WriteObject(GENIE_OBJ_STRINGS,6,0);
 			//genie.WriteObject(GENIE_OBJ_STRINGS,2,0);
+			
+			if (millis() >= waitPeriod)
+			{
+				Serial.println("");
+				Serial.print("Size");
+				Serial.println(card.getFileSize());
+				Serial.print("Position");
+				Serial.println(card.getSdPosition());
+				
+				//Time Left
+				Serial.print("TIME LEFT:  ");
+				uint32_t timeleft=(time2/card.getSdPosition()*card.getFileSize());
+				Serial.println(timeleft);
+				Serial.print((int)timeleft%60);
+				Serial.print(":");
+				Serial.print((int)timeleft/60);
+				Serial.println("");
+				
+				waitPeriod=10000+millis();	//Every 10s
+				
+				Serial.print("Time2:  ");
+				Serial.println(time2);
+				Serial.println("");
+			}
+					
+		}else if (surfing_utilities)
+		{
+			if (millis() >= waitPeriod)
+			{
+				genie.WriteStr(STRINGS_NOZZLE1,"hola");//E1
+				genie.WriteStr(STRINGS_NOZZLE2,prepare_temp_string(1));//E2
+				genie.WriteStr(STRINGS_BED,prepare_temp_string(2));//BED			
+				waitPeriod=1000+millis();	//Every 1s
+			}
 		}else
+		 // We coudl control if we are in utilities menu or not (if in_utilities)
 		{
 			genie.WriteObject(GENIE_OBJ_LED_DIGITS,8, tHotend);
 			genie.WriteObject(GENIE_OBJ_LED_DIGITS,9, 0);
 			genie.WriteObject(GENIE_OBJ_LED_DIGITS,10, tBed);
+								
 			//genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,0);
 			//genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,0);	
 			//genie.WriteObject(GENIE_OBJ_STRINGS,7,0);
 			//genie.WriteObject(GENIE_OBJ_STRINGS,8,0);
+			
+			
+			
 		}
 	//}
-	//waitPeriod=250+millis();	
+	
 	genie.DoEvents();
 }
 #endif

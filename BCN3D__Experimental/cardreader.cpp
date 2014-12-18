@@ -568,4 +568,17 @@ void CardReader::printingHasFinished()
     }
     autotempShutdown();
 }
+
+
+uint32_t CardReader::getFileSize()
+{
+	return filesize;
+}
+
+
+uint32_t CardReader::getSdPosition()
+{
+	return sdpos;
+}
+
 #endif //SDSUPPORT
