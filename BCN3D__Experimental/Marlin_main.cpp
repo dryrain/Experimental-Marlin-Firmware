@@ -486,7 +486,7 @@ void setup()
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
   servo_init();
-  //card.initsd();
+  card.initsd();
   ////lcd_init();
   
   lcd_oldcardstatus=true;
@@ -806,7 +806,7 @@ void myGenieEventHandler(void)
 				genie.WriteObject(GENIE_OBJ_FORM,FORM_PRINTING,0);								
 			}
 			
-			else if (Event.reportObject.index == BUTTON_STOP )
+			else if (Event.reportObject.index == BUTTON_STOP_YES )
 			{
 				card.sdprinting = false;
 				card.closefile();
@@ -825,7 +825,7 @@ void myGenieEventHandler(void)
 				//setTargetBed(0);
 				
 				//Rapduch
-				genie.WriteObject(GENIE_OBJ_FORM,5,0);
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_MAIN_SCREEN,0);
 			}		
 			
 			else if (Event.reportObject.index == BUTTON_SPEED_UP )
@@ -1147,21 +1147,64 @@ bool timepassed(long waiting_time)
 	}
 }
 
+char *itostr3(const int &xx)
+{
+	char conv[8];
+	if (xx >= 100)
+	conv[0]=(xx/100)%10+'0';
+	else
+	conv[0]=' ';
+	if (xx >= 10)
+	conv[1]=(xx/10)%10+'0';
+	else
+	conv[1]=' ';
+	conv[2]=(xx)%10+'0';
+	conv[3]=0;
+	return conv;
+}
+
 //Rapduch
 char* prepare_temp_string(int element)
 {
 	//hotend 1
-	char cmd[8]=""; //Temperature line
+	char cmd[3]="";
+	char cmd_t[3]="";
+	char* temp_string; //Temperature line
+	//char* cmd;
 	if (element==0 || element==1){	
 		int tHotend=int(degHotend(element) + 0.5);
 		int tTarget=int(degTargetHotend(element) + 0.5);
-		sprintf(cmd,"%d/%d",tHotend,tTarget);
+		//Declare a String
+		String str_hot = String(tHotend);
+		String str_targethot = String(tTarget);
+		str_hot.toCharArray(cmd,3);
+		str_targethot.toCharArray(cmd_t,3);
+		//sprintf(temp_string,"%d/%d",cmd,cmd_t);
+		//char* temp = strcat(cmd,"/");
+		//temp_string = strcat(temp,cmd_t);
+		
+		
+		
+		strcat(temp_string,cmd);
+		strcat(temp_string,"/");
+		strcat(temp_string,cmd_t);
+		
+		
+		
+		//cmd = strcat(itostr3(tHotend),"/");
+		//cmd = strcat(cmd,itostr3(tTarget));
 	}else if (element==2){
 		int tBed=int(degBed() + 0.5);
 		int tTargetBed=int(degTargetBed() + 0.5);
-		sprintf(cmd,"%d/%d",tBed,tTargetBed);
+		String str_bed = String(tBed);
+		String str_targetbed = String(tTargetBed);
+		str_bed.toCharArray(cmd,3);
+		str_targetbed.toCharArray(cmd_t,3);
+		char* temp = strcat(cmd,"/");
+		temp_string = strcat(temp,cmd_t);
+		//sprintf(temp_string,"%d/%d",cmd,cmd_t);
 	}
-	return cmd;
+	return temp_string;
 }
 
 //By Jordi Calduch
@@ -1169,7 +1212,7 @@ char* prepare_temp_string(int element)
 void touchscreen_update()
 {
 	uint32_t time = millis()/60000 - starttime/60000;
-	uint32_t time2 = millis()-starttime;
+	uint32_t time2 = millis()/60000-starttime/60000;
 	int tHotend=int(degHotend(tmp_extruder));
 	int tBed=int(degBed() + 0.5);
 	//static keyword specifies that the variable retains its state between calls to the function
@@ -1194,6 +1237,10 @@ void touchscreen_update()
 				Serial.print("Position");
 				Serial.println(card.getSdPosition());
 				
+				Serial.print("Percent Done");
+				Serial.println(card.percentDone());
+				
+				
 				//Time Left
 				Serial.print("TIME LEFT:  ");
 				uint32_t timeleft=(time2/card.getSdPosition()*card.getFileSize());
@@ -1214,10 +1261,118 @@ void touchscreen_update()
 		{
 			if (millis() >= waitPeriod)
 			{
-				genie.WriteStr(STRINGS_NOZZLE1,"hola");//E1
-				genie.WriteStr(STRINGS_NOZZLE2,prepare_temp_string(1));//E2
-				genie.WriteStr(STRINGS_BED,prepare_temp_string(2));//BED			
-				waitPeriod=1000+millis();	//Every 1s
+				//genie.WriteStr(STRINGS_NOZZLE1,"hola");//E1
+				//genie.WriteStr(STRINGS_NOZZLE1,"111/222");//E1
+				//genie.WriteStr(STRINGS_NOZZLE2,"150/220");//E2
+				//genie.WriteStr(STRINGS_BED,"46/50");//BED
+				
+				
+				//Declare a String
+				String str = String(tHotend);
+				
+				//----------------------------------
+				char cmd[4]="";
+				char cmd_t[4]="";
+				char temp_string1[10]="";
+				
+				int tHotend=int(degHotend(0) + 0.5);
+				int tTarget=int(degTargetHotend(0) + 0.5);
+				//Declare a String
+				String str_hot = String(tHotend);
+				String str_targethot = String(tTarget);
+				str_hot.toCharArray(cmd,4);
+				
+				
+				
+				str_targethot.toCharArray(cmd_t,4);
+				
+				Serial.print("Prova TempString : ");
+				Serial.println(cmd);
+				Serial.println(cmd_t);
+				
+				/*
+				if (tHotend>=100) {
+					
+				}
+				*/
+				strcat(temp_string1,cmd);
+				strcat(temp_string1,"/");
+				strcat(temp_string1,cmd_t);
+				
+				Serial.println(temp_string1);
+
+				char buffer[256]; 
+				sprintf(buffer, " % 3d/% 3d",tHotend,tTarget);
+				Serial.println(buffer);
+				genie.WriteStr(STRINGS_NOZZLE1,buffer);
+				//genie.WriteStr(STRINGS_NOZZLE1,temp_string1);
+				
+				//EX 2 -----------------------
+				//Declare a String
+				tHotend=int(degHotend(1) + 0.5);
+				tTarget=int(degTargetHotend(1) + 0.5);
+				char temp_string2[8]="";
+				str_hot = String(tHotend);
+				str_targethot = String(tTarget);
+				str_hot.toCharArray(cmd,3);
+				str_targethot.toCharArray(cmd_t,3);
+				
+				strcat(temp_string2,cmd);
+				strcat(temp_string2,"/");
+				strcat(temp_string2,cmd_t);
+				
+				
+				
+				sprintf(buffer, " % 3d/% 3d",tHotend,tTarget);
+				Serial.println(buffer);
+				genie.WriteStr(STRINGS_NOZZLE2,buffer);
+				//genie.WriteStr(STRINGS_NOZZLE2,temp_string2);
+				
+				//BED
+				char temp_string3[8]="";
+				int tBed=int(degBed() + 0.5);
+				int tTargetBed=int(degTargetBed() + 0.5);
+				String str_bed = String(tBed);
+				String str_targetbed = String(tTargetBed);
+				str_bed.toCharArray(cmd,3);
+				str_targetbed.toCharArray(cmd_t,3);
+				
+				strcat(temp_string3,cmd);
+				strcat(temp_string3,"/");
+				strcat(temp_string3,cmd_t);
+				
+			
+				sprintf(buffer, " % 3d/% 3d",tBed,tTargetBed);
+				Serial.println(buffer);
+				genie.WriteStr(STRINGS_BED,buffer);
+				
+				//genie.WriteStr(STRINGS_BED,temp_string3);
+				
+								
+				//char* cmd = prepare_temp_string(0);
+				Serial.print("Extruder 1 :  ");
+				//Serial.println(cmd);
+				Serial.println(tHotend);
+				
+				//cmd = strcat("Jor","/");
+				char cmdex[8];
+				//cmd=itostr3(tHotend);
+				//cmd = strcat(itostr3(tHotend),"/");
+				//itoa(tHotend,cmd,10);
+				Serial.print("Extruder 1 String :  ");
+				str.toCharArray(cmdex,8);
+				Serial.println(cmdex);
+				
+				//prepare_temp_string(0);
+				//Serial.println(prepare_temp_string(0));
+				
+				//Serial.println(prepare_temp_string(1));
+				//Serial.println(prepare_temp_string(2));
+				
+				//genie.WriteStr(STRINGS_NOZZLE2,prepare_temp_string(1));//E2
+				//genie.WriteStr(STRINGS_BED,prepare_temp_string(2));//BED			
+				//waitPeriod=1000+millis();	//Every 1s
+				waitPeriod=1000+millis();
 			}
 		}else
 		 // We coudl control if we are in utilities menu or not (if in_utilities)
@@ -1229,10 +1384,7 @@ void touchscreen_update()
 			//genie.WriteObject(GENIE_OBJ_LED_DIGITS,12,0);
 			//genie.WriteObject(GENIE_OBJ_LED_DIGITS,11,0);	
 			//genie.WriteObject(GENIE_OBJ_STRINGS,7,0);
-			//genie.WriteObject(GENIE_OBJ_STRINGS,8,0);
-			
-			
-			
+			//genie.WriteObject(GENIE_OBJ_STRINGS,8,0);		
 		}
 	//}
 	
@@ -2604,6 +2756,7 @@ void process_commands()
           temp=70;
       if (code_seen('S')) temp=code_value();
       if (code_seen('C')) c=code_value();
+	  Serial.println("Sóc el Joan, i provo!");
       PID_autotune(temp, e, c);
     }
     break;

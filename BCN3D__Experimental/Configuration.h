@@ -533,6 +533,9 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
   #endif
 #endif
 
+
+
+
 // Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN
 

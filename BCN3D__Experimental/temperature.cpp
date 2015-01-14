@@ -185,6 +185,8 @@ void PID_autotune(float temp, int extruder, int ncycles)
   float Ku, Tu;
   float Kp, Ki, Kd;
   float max = 0, min = 10000;
+  
+  Serial.println("Sóc el Joan, i provo_2!");
 
   if ((extruder > EXTRUDERS)
   #if (TEMP_BED_PIN <= -1)
