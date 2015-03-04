@@ -28,6 +28,7 @@ public:
   void getStatus();
   void printingHasFinished();
   
+  //Rapduch
   uint32_t getFileSize();
   uint32_t getSdPosition();
 

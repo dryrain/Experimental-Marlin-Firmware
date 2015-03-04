@@ -963,22 +963,54 @@ void myGenieEventHandler(void)
 			
 			else if (Event.reportObject.index == BUTTON_PREHEAT_PLA)
 			{
-				//Reset other buttons
-				//genie.WriteObject(GENIE_OBJ_USERIMAGES,BUTTON_PREHEAT_ABS,0);
-				int value = genie.GetEventData(&Event);
-				if (value == 1) // Need to preheat
-				{
+				////Reset other buttons
+				////genie.WriteObject(GENIE_OBJ_USERIMAGES,BUTTON_PREHEAT_ABS,0);
+				//int value = genie.GetEventData(&Event);
+				//if (value == 1) // Need to preheat
+				//{
 					setTargetHotend(220,active_extruder);
 					setTargetBed(50);		
 					Serial.println("Preheating PLA");			
-				}
-				else
-				{
-					setTargetHotend(0,active_extruder);
-					setTargetBed(0);	
-					Serial.println("Cooling down PLA");			
-				}
+				//}
+				//else
+				//{
+					//setTargetHotend(0,active_extruder);
+					//setTargetBed(0);	
+					//Serial.println("Cooling down PLA");			
+				//}
+				genie.WriteObject(GENIE_OBJ_FORM,FORM_TEMPERATURE,0);
 			}		
+			
+			else if (Event.reportObject.index == BUTTON_CHANGE_EXTRUDER)
+			{
+				int value = genie.GetEventData(&Event);
+				if (value == 1)
+				{ //Second extruder
+					enquecommand_P(((PSTR("T 1"))));
+					}else{
+					enquecommand_P(((PSTR("T 0"))));
+				}
+			}
+			
+			else if (Event.reportObject.index == BUTTON_PROVA_PRESS)
+			{
+				int value = genie.GetEventData(&Event);
+				if (value == 1) // Active
+				{
+					genie.WriteObject(GENIE_OBJ_USERBUTTON,BUTTON_PROVA,1);
+					}else{
+					genie.WriteObject(GENIE_OBJ_USERBUTTON,BUTTON_PROVA,0);
+				}
+			}
+			
+			else if (Event.reportObject.index == BUTTON_PROVA)
+			{
+				int value = genie.GetEventData(&Event);
+				Serial.print("Valor:   ");	
+				Serial.println(value);			
+			}
+			
+			
 		}							
 		//USERBUTTONS------------------------------------------------------
 		
